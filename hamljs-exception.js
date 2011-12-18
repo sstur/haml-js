@@ -13,9 +13,9 @@ require('./hamljs');
  * Translates exception messages.
  * @package     HamlJS
  */
-var HamlException = Exception.extend({
+var HamlJSException = Exception.extend({
   /**
-   * Haml Exception.
+   * HamlJS Exception.
    * @param string Category (haml|sass)
    * @param string Exception message
    * @param array parameters to be applied to the message using `strtr`.

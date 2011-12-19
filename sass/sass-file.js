@@ -1,47 +1,45 @@
-/**
- * SassFile class file.
- * File handling utilities.
- * @copyright   Copyright (c) 2010 PBM Web Development
- * @license     see license.txt
- * @package     HamlJS
- * @subpackage  Sass
- */
+/*global merge, file_exists, dirname, basename, realpath, is_dir, mkdir, scandir, filemtime, md5, serialize,
+  unserialize, file_get_contents, file_put_contents */
+
+var Class = require('../lib/class');
+
+var SassParser = require('./sass-parser');
+var SassException = require('./sass-exception');
 
 /**
- * SassFile class.
- * @package     HamlJS
- * @subpackage  Sass
+ * @class SassFile
+ * File handling utilities.
  */
-var SassFile = Class.extend({
+var SassFile = module.exports = Class.extend({
   SASS: 'sass',
   SCSS: 'scss',
   SASSC: 'sassc',
 
-  $extensions: ['sass', 'scss'],
+  extensions: ['sass', 'scss'],
 
   /**
    * Returns the parse tree for a file.
    * If caching is enabled a cached version will be used if possible; if not the
    * parsed file will be cached.
-   * @param string filename to parse
-   * @param SassParser Sass parser
-   * @return SassRootNode
+   * @param {string} filename - filename to parse
+   * @param {SassParser} parser - Sass parser
+   * @returns {SassRootNode}
    */
-  getTree: function($filename, $parser) {
-    var $cached;
-    if ($parser.cache) {
-      $cached = this.getCachedFile($filename, $parser.cache_location);
-      if ($cached !== false) {
-        return $cached;
+  getTree: function(filename, parser) {
+    var cached;
+    if (parser.cache) {
+      cached = this.getCachedFile(filename, parser.cache_location);
+      if (cached !== false) {
+        return cached;
       }
     }
 
-    var $sassParser = new SassParser(merge({}, $parser.options, {line: 1}));
-    var $tree = $sassParser.parse($filename);
-    if ($parser.cache) {
-      this.setCachedFile($tree, $filename, $parser.cache_location);
+    var sassParser = new SassParser(merge({}, parser.options, {line: 1}));
+    var tree = sassParser.parse(filename);
+    if (parser.cache) {
+      this.setCachedFile(tree, filename, parser.cache_location);
     }
-    return $tree;
+    return tree;
    },
 
   /**
@@ -50,76 +48,76 @@ var SassFile = Class.extend({
    * the template_location directory.
    * If the filename does not end in .sass or .scss try the current syntax first
    * then, if a file is not found, try the other syntax.
-   * @param string filename to find
-   * @param SassParser Sass parser
-   * @return string path to file
-   * @throws SassException if file not found
+   * Throws SassException if file not found.
+   * @param {string} filename - filename to find
+   * @param {SassParser} parser - Sass parser
+   * @returns {string} path to file
    */
-  getFile: function($filename, $parser) {
-    var $ext = substr($filename, -5), $_filename, $path;
+  getFile: function(filename, parser) {
+    var ext = filename.slice(-5), _filename, path, i;
 
-    for (var $i = 0; $i < this.$extensions; $i++) {
-      var $extension = this.$extensions[$i];
-      if ($ext !== '.' + this.SASS && $ext !== '.' + this.SCSS) {
-        if ($i === 0) {
-          $_filename = $_filename + $parser.syntax;
+    for (i = 0; i < this.extensions; i++) {
+      var extension = this.extensions[i];
+      if (ext !== '.' + this.SASS && ext !== '.' + this.SCSS) {
+        if (i === 0) {
+          _filename = _filename + parser.syntax;
         } else {
-          $_filename = $filename + '.' + ($parser.syntax === this.SASS ? this.SCSS : this.SASS);
+          _filename = filename + '.' + (parser.syntax === this.SASS ? this.SCSS : this.SASS);
         }
       } else {
-        $_filename = $filename;
+        _filename = filename;
       }
 
-      if (file_exists($_filename)) {
-        return $_filename;
+      if (file_exists(_filename)) {
+        return _filename;
       }
 
-      var arr = [dirname($parser.filename)].concat($parser.load_paths);
-      for (var i = 0; i < arr.length; i++) {
-        var $loadPath = arr[i];
-        $path = this.findFile($_filename, realpath($loadPath));
-        if ($path !== false) {
-          return $path;
+      var arr = [dirname(parser.filename)].concat(parser.load_paths);
+      for (i = 0; i < arr.length; i++) {
+        var loadPath = arr[i];
+        path = this.findFile(_filename, realpath(loadPath));
+        if (path !== false) {
+          return path;
         }
       }
 
-      if ($parser.template_location != null) {
-        $path = this.findFile($_filename, realpath($parser.template_location));
-        if ($path !== false) {
-          return $path;
+      if (parser.template_location != null) {
+        path = this.findFile(_filename, realpath(parser.template_location));
+        if (path !== false) {
+          return path;
         }
       }
     }
 
-    throw new SassException('Unable to find {what}: {filename}', {'what': 'import file', 'filename': $filename});
+    throw new SassException('Unable to find {what}: {filename}', {'what': 'import file', 'filename': filename});
   },
 
   /**
    * Looks for the file recursively in the specified directory.
    * This will also look for _filename to handle Sass partials.
-   * @param string filename to look for
-   * @param string path to directory to look in and under
-   * @return mixed string: full path to file if found, false if not
+   * @param {string} filename - filename to look for
+   * @param {string} dir - path to directory to look in and under
+   * @returns full path to file or `false` if not found
    */
-  findFile: function($filename, $dir) {
-    var $partialname = dirname($filename) + DIRECTORY_SEPARATOR + '_' + basename($filename);
+  findFile: function(filename, dir) {
+    var partialname = dirname(filename) + '/_' + basename(filename);
+    var file;
 
-    var arr = [$filename, $partialname];
+    var arr = [filename, partialname];
     for (var i = 0; i < arr.length; i++) {
-      var $file = arr[i];
-      if (file_exists($dir + DIRECTORY_SEPARATOR + $file)) {
-        return realpath($dir + DIRECTORY_SEPARATOR + $file);
+      file = arr[i];
+      if (file_exists(dir + '/' + file)) {
+        return realpath(dir + '/' + file);
       }
     }
 
-    var $files = array_slice(scandir($dir), 2);
-
-    for (i = 0; i < $files.length; i++) {
-      $file = $files[i];
-      if (is_dir($dir + DIRECTORY_SEPARATOR + $file)) {
-        var $path = this.findFile($filename, $dir + DIRECTORY_SEPARATOR + $file);
-        if ($path !== false) {
-          return $path;
+    var files = scandir(dir).slice(2);
+    for (i = 0; i < files.length; i++) {
+      file = files[i];
+      if (is_dir(dir + '/' + file)) {
+        var path = this.findFile(filename, dir + '/' + file);
+        if (path !== false) {
+          return path;
         }
       }
     }
@@ -128,36 +126,36 @@ var SassFile = Class.extend({
 
   /**
    * Returns a cached version of the file if available.
-   * @param string filename to fetch
-   * @param string path to cache location
-   * @return mixed the cached file if available or false if it is not
+   * @param {string} filename - filename to fetch
+   * @param {string} cacheLocation - path to cache location
+   * @returns the cached file if available or false if not
    */
-  getCachedFile: function($filename, $cacheLocation) {
-    var $cached = realpath($cacheLocation) + DIRECTORY_SEPARATOR + md5($filename) + '.' + this.SASSC;
+  getCachedFile: function(filename, cacheLocation) {
+    var cached = realpath(cacheLocation) + '/' + md5(filename) + '.' + this.SASSC;
 
-    if ($cached && file_exists($cached) && filemtime($cached) >= filemtime($filename)) {
-      return unserialize(file_get_contents($cached));
+    if (cached && file_exists(cached) && filemtime(cached) >= filemtime(filename)) {
+      return unserialize(file_get_contents(cached));
     }
     return false;
   },
 
   /**
    * Saves a cached version of the file.
-   * @param SassRootNode Sass tree to save
-   * @param string filename to save
-   * @param string path to cache location
-   * @return mixed the cached file if available or false if it is not
+   * @param {SassRootNode} sassc - Sass tree to save
+   * @param {string} filename - filename to save
+   * @param {string} cacheLocation - path to cache location
+   * @returns the cached file if available or false if not
    */
-  setCachedFile: function($sassc, $filename, $cacheLocation) {
-    var $cacheDir = realpath($cacheLocation);
+  setCachedFile: function(sassc, filename, cacheLocation) {
+    var cacheDir = realpath(cacheLocation);
 
-    if (!$cacheDir) {
-      mkdir($cacheLocation);
-      $cacheDir = realpath($cacheLocation);
+    if (!cacheDir) {
+      mkdir(cacheLocation);
+      cacheDir = realpath(cacheLocation);
     }
 
-    var $cached = $cacheDir + DIRECTORY_SEPARATOR + md5($filename) + '.' + this.SASSC;
+    var cached = cacheDir + '/' + md5(filename) + '.' + this.SASSC;
 
-    return file_put_contents($cached, serialize($sassc));
+    return file_put_contents(cached, serialize(sassc));
   }
 });

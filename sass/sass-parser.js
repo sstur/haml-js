@@ -1,35 +1,50 @@
+/*global merge, substr, file_get_contents, explode, ltrim, rtrim */
+
 /**
- * SassParser class file.
+ * @class SassParser
  * See the [Sass documentation](http://sass-lang.com/docs)
  * for details of Sass.
  *
  * Credits:
- * This is a port of Sass from Ruby. All the genius comes from the people that
- * invented and develop Sass; in particular:
+ * This is a port of Sass from [PHP](http://code.google.com/p/phamlp) which was originally ported from Ruby.
+ * All the genius comes from the people that develop these other projects, in particular:
+ * + [Chris Yates](mailto:chris.l.yates@gmail.com),
  * + [Hampton Catlin](http://hamptoncatlin.com/),
  * + [Nathan Weizenbaum](http://nex-3.com/),
  * + [Chris Eppstein](http://chriseppstein.github.com/)
  *
- * @copyright   Copyright (c) 2010 PBM Web Development
- * @license     see license.txt
- * @package     HamlJS
- * @subpackage  Sass
  */
 
-require('./sass-file');
-require('./sass-exception');
-require('./tree/sass-node');
+var Class = require('../lib/class');
+
+var HamlJS = require('../haml');
+var SassFile = require('./sass-file');
+var SassException = require('./sass-exception');
+var SassRenderer = require('./renderers/sass-renderer');
+var NODES = require('./tree/sass-node');
+
+var SassRootNode = NODES.SassRootNode
+  , SassDirectiveNode = NODES.SassDirectiveNode
+  , SassCommentNode = NODES.SassCommentNode
+  , SassVariableNode = NODES.SassVariableNode
+  , SassPropertyNode = NODES.SassPropertyNode
+  , SassMixinDefinitionNode = NODES.SassMixinDefinitionNode
+  , SassMixinNode = NODES.SassMixinNode
+  , SassRuleNode = NODES.SassRuleNode
+  , SassExtendNode = NODES.SassExtendNode
+  , SassImportNode = NODES.SassImportNode
+  , SassForNode = NODES.SassForNode
+  , SassIfNode = NODES.SassIfNode
+  , SassElseNode = NODES.SassElseNode
+  , SassWhileNode = NODES.SassWhileNode
+  , SassDebugNode = NODES.SassDebugNode;
 
 /**
- * SassParser class.
- * Parses {@link http://sass-lang.com/ .sass and .sccs} files.
- * @package     HamlJS
- * @subpackage  Sass
+ * @class SassParser
+ * Parses [.sass and .sccs](http://sass-lang.com/) files.
  */
-var SassParser = Class.extend({
-  /**#@+
-   * Default option values
-   */
+var SassParser = module.exports = Class.extend({
+  // constants
   CACHE: true,
   CACHE_LOCATION: './sass-cache',
   CSS_LOCATION: './css',
@@ -47,57 +62,46 @@ var SassParser = Class.extend({
   SINGLE_QUOTE: "'",
 
   /**
-   * @var string the character used for indenting
+   * string the character used for indenting
    * @see indentChars
    * @see indentSpaces
    */
   indentChar: null,
   /**
-   * @var array allowable characters for indenting
+   * array allowable characters for indenting
    */
   indentChars: [' ', "\t"],
   /**
-   * @var integer number of spaces for indentation.
+   * integer number of spaces for indentation.
    * Used to calculate `Level` if `indentChar` is space.
    */
   indentSpaces: 2,
 
   /**
-   * @var string source
+   * string source
    */
   source: null,
 
-  /**#@+
-   * Option
-   */
   /**
-   * cache:
-   * @var boolean Whether parsed Sass files should be cached, allowing greater
-   * speed.
-   *
+   * {Boolean} Whether parsed Sass files should be cached, allowing greater speed.
    * Defaults to true.
    */
   cache: null,
 
   /**
-   * cache_location:
-   * @var string The path where the cached sassc files should be written to.
-   *
+   * {String} The path where the cached sassc files should be written to.
    * Defaults to './sass-cache'.
    */
   cache_location: null,
 
   /**
-   * css_location:
-   * @var string The path where CSS output should be written to.
-   *
+   * {String} The path where CSS output should be written to.
    * Defaults to './css'.
    */
   css_location: null,
 
   /**
-   * debug_info:
-   * @var boolean When true the line number and file where a selector is defined
+   * {Boolean} When true the line number and file where a selector is defined
    * is emitted into the compiled CSS in a format that can be understood by the
    * [FireSass Firebug extension](https://addons.mozilla.org/en-US/firefox/addon/103988/)
    * Disabled when using the compressed output style.
@@ -108,30 +112,26 @@ var SassParser = Class.extend({
   debug_info: null,
 
   /**
-   * extensions:
-   * @var array Sass extensions, e.g. Compass. An associative array of the form
-   * $name => $options where $name is the name of the extension and $options
-   * is an array of name=>value options pairs.
+   * {Object} Sass extensions, e.g. Compass.
+   * An object of the form `{name: options}` where `name` is the name of the
+   * extension and `options` is an object of name-value pairs.
    */
   extensions: null,
 
   /**
-   * filename:
-   * @var string The filename of the file being rendered.
+   * {String} The filename of the file being rendered.
    * This is used solely for reporting errors.
    */
   filename: null,
 
   /**
-   * function_paths:
-   * @var array An array of filesystem paths which should be searched for
+   * {Array} An array of filesystem paths which should be searched for
    * SassScript functions.
    */
   function_paths: null,
 
   /**
-   * line:
-   * @var integer The number of the first line of the Sass template. Used for
+   * {Number} The number of the first line of the Sass template. Used for
    * reporting line numbers for errors. This is useful to set if the Sass
    * template is embedded.
    *
@@ -140,8 +140,7 @@ var SassParser = Class.extend({
   line: null,
 
   /**
-   * line_numbers:
-   * @var boolean When true the line number and filename where a selector is
+   * {Boolean} When true the line number and filename where a selector is
    * defined is emitted into the compiled CSS as a comment. Useful for debugging
    * especially when using imports and mixins.
    * Disabled when using the compressed output style or the debug_info option.
@@ -153,8 +152,7 @@ var SassParser = Class.extend({
    line_numbers: null,
 
   /**
-   * load_paths:
-   * @var array An array of filesystem paths which should be searched for
+   * {Array} An array of filesystem paths which should be searched for
    * Sass templates imported with the @import directive.
    *
    * Defaults to './sass-templates'.
@@ -162,8 +160,7 @@ var SassParser = Class.extend({
   load_paths: null,
 
   /**
-   * property_syntax:
-   * @var string Forces the document to use one syntax for
+   * {String} Forces the document to use one syntax for
    * properties. If the correct syntax isn't used, an error is thrown.
    * Value can be:
    * + new - forces the use of a colon or equals sign after the property name.
@@ -173,20 +170,18 @@ var SassParser = Class.extend({
    *
    * By default, either syntax is valid.
    *
-   * Ignored for SCSS files which alaways use the new style.
+   * Ignored for SCSS files which always use the new style.
    */
   property_syntax: null,
 
   /**
-   * quiet:
-   * @var boolean When set to true, causes warnings to be disabled.
+   * {Boolean} When set to true, causes warnings to be disabled.
    * Defaults to false.
    */
   quiet: null,
 
   /**
-   * style:
-   * @var string the style of the CSS output.
+   * {String} the style of the CSS output.
    * Value can be:
    * + nested - Nested is the default Sass style, because it reflects the
    * structure of the document in much the same way Sass does. Each selector
@@ -208,8 +203,7 @@ var SassParser = Class.extend({
   style: null,
 
   /**
-   * syntax:
-   * @var string The syntax of the input file.
+   * {String} The syntax of the input file.
    * 'sass' for the indented syntax and 'scss' for the CSS-extension syntax.
    *
    * This is set automatically when parsing a file, else defaults to 'sass'.
@@ -217,29 +211,25 @@ var SassParser = Class.extend({
   syntax: null,
 
   /**
-   * template_location:
-   * @var string Path to the root sass template directory for your
+   * {String} Path to the root sass template directory for your
    * application.
    */
   template_location: null,
 
   /**
-   * vendor_properties:
    * If enabled a property need only be written in the standard form and vendor
    * specific versions will be added to the style sheet.
-   * @var mixed array: vendor properties, merged with the built-in vendor
+   * mixed array: vendor properties, merged with the built-in vendor
    * properties, to automatically apply.
    * Boolean true: use built in vendor properties.
    *
    * Defaults to vendor_properties disabled.
    * @see _vendorProperties
    */
-  vendor_properties: [],
+  vendor_properties: {},
 
-  /**#@-*/
   /**
-   * Defines the build-in vendor properties
-   * @var array built-in vendor properties
+   * {Array} built-in vendor properties
    * @see vendor_properties
    */
   _vendorProperties: {
@@ -274,134 +264,121 @@ var SassParser = Class.extend({
   },
 
   /**
-   * Constructor.
    * Sets parser options
-   * @param array $options
-   * @return SassParser
+   * @param {Object} opts - Options
+   * @returns {SassParser}
    */
-  init: function($options) {
-    if (!$options) {
+  init: function(opts) {
+    if (!opts) {
       throw new SassException('{what} must be a {type}', {'what': 'options', 'type': 'array'});
     }
-    if ($options['language']) {
-      HamlJS.$language = $options['language'];
+    if (opts['language']) {
+      HamlJS.language = opts['language'];
     }
+    var self = this.prototype;
 
     //TODO: make this non-blocking
-    if ($options['extensions']) {
-      for (var $extension in $options['extensions']) {
-        var $extOptions = $options['extensions'][$extension];
-        var $configClass = require(dirname(__filename) + DIRECTORY_SEPARATOR + 'extensions' + DIRECTORY_SEPARATOR + $extension + DIRECTORY_SEPARATOR + 'config');
-        var $config = new $configClass;
-        $config.config($extOptions);
+    if (opts['extensions']) {
+      for (var extension in opts['extensions']) {
+        var extOptions = opts['extensions'][extension];
+        var configClass = require('./extensions/' + extension + '/config');
+        var config = new configClass();
+        config.config(extOptions);
 
-        var $lp = dirname(__filename) + DIRECTORY_SEPARATOR + 'extensions' + DIRECTORY_SEPARATOR + $extension + DIRECTORY_SEPARATOR + 'frameworks';
-        var $fp = dirname(__filename) + DIRECTORY_SEPARATOR + 'extensions' + DIRECTORY_SEPARATOR + $extension + DIRECTORY_SEPARATOR + 'functions';
-        $options['load_paths'] = ($options['load_paths'] ? $options['load_paths'].concat([$lp]) : [$lp]);
-        $options['function_paths'] = ($options['function_paths'] ? $options['function_paths'].concat([$fp]) : [$fp]);
+        var lp = './extensions/' + extension + '/frameworks';
+        var fp = './extensions/' + extension + '/functions';
+        opts['load_paths'] = (opts['load_paths'] ? opts['load_paths'].concat([lp]) : [lp]);
+        opts['function_paths'] = (opts['function_paths'] ? opts['function_paths'].concat([fp]) : [fp]);
       }
     }
 
-    if ($options['vendor_properties']) {
-      if ($options['vendor_properties'] === true) {
+    if (opts['vendor_properties']) {
+      if (opts['vendor_properties'] === true) {
         this.vendor_properties = this._vendorProperties;
       } else
-      if ($options['vendor_properties']) {
+      if (opts['vendor_properties']) {
         this.vendor_properties = this.vendor_properties.concat(this._vendorProperties);
       }
     }
-    //TODO: check this is right?
-    //unset($options['language'], $options['vendor_properties']);
-    delete $options['language'];
-    delete $options['vendor_properties'];
+    delete opts['language'];
+    delete opts['vendor_properties'];
 
-    var $defaultOptions = {
+    var defaultOptions = {
       'cache': self.CACHE,
-      'cache_location': dirname(__filename) + DIRECTORY_SEPARATOR + self.CACHE_LOCATION,
-      'css_location': dirname(__filename) + DIRECTORY_SEPARATOR + self.CSS_LOCATION,
+      'cache_location': __dirname + '/' + self.CACHE_LOCATION,
+      'css_location': __dirname + '/' + self.CSS_LOCATION,
       'debug_info': false,
       'filename': {'dirname': '', 'basename': ''},
       'function_paths': [],
-      'load_paths': [dirname(__filename) + DIRECTORY_SEPARATOR + self.TEMPLATE_LOCATION],
+      'load_paths': [__dirname + '/' + self.TEMPLATE_LOCATION],
       'line': 1,
       'line_numbers': false,
       'style': SassRenderer.STYLE_NESTED,
       'syntax': SassFile.SASS
     };
 
-    var obj = merge({}, $defaultOptions, $options);
-    for (var $name in obj) {
-      var $value = obj[$name];
-      if (typeof this[$name] != 'undefined') {
-        this[$name] = $value;
+    var obj = merge({}, defaultOptions, opts);
+    for (var name in obj) {
+      var value = obj[name];
+      if (typeof this[name] != 'undefined') {
+        this[name] = value;
       }
     }
   },
 
+  //TODO: determine if all these getter methods are necessary
   getCache: function() {
     return this.cache;
   },
-
   getCache_location: function() {
     return this.cache_location;
   },
-
   getCss_location: function() {
     return this.css_location;
   },
-
   getDebug_info: function() {
     return this.debug_info;
   },
-
   getFilename: function() {
     return this.filename;
   },
-
   getLine: function() {
     return this.line;
   },
-
   getSource: function() {
     return this.source;
   },
-
   getLine_numbers: function() {
     return this.line_numbers;
   },
-
   getFunction_paths: function() {
     return this.function_paths;
   },
-
   getLoad_paths: function() {
     return this.load_paths;
   },
-
   getProperty_syntax: function() {
     return this.property_syntax;
   },
-
   getQuiet: function() {
     return this.quiet;
   },
-
   getStyle: function() {
     return this.style;
   },
-
   getSyntax: function() {
     return this.syntax;
   },
-
   getTemplate_location: function() {
     return this.template_location;
   },
-
   getVendor_properties: function() {
     return this.vendor_properties;
   },
 
+  /**
+   * Gets the set of default options
+   */
   getOptions: function() {
     return {
       'cache': this.cache,
@@ -423,12 +400,13 @@ var SassParser = Class.extend({
 
   /**
    * Parse a sass file or Sass source code and returns the CSS.
-   * @param string name of source file or Sass source
-   * @return string CSS
+   * @param {string} source - name of source file or Sass source
+   * @param {boolean} [isFile=true]
+   * @returns {string} CSS
    */
-  toCss: function($source, $isFile) {
-    if (typeof $isFile == 'undefined') $isFile = true;
-    return this.parse($source, $isFile).render();
+  toCss: function(source, isFile) {
+    if (typeof isFile == 'undefined') isFile = true;
+    return this.parse(source, isFile).render();
   },
 
   /**
@@ -438,15 +416,16 @@ var SassParser = Class.extend({
    * load_paths option.
    * If caching is enabled a cached version will be used if possible or the
    * compiled version cached if not.
-   * @param string name of source file or Sass source
-   * @return SassRootNode Root node of document tree
+   * @param {string} source - name of source file or Sass source
+   * @param {boolean} [isFile=true]
+   * @returns {SassRootNode} Root node of document tree
    */
-  parse: function($source, $isFile) {
-    if (typeof $isFile == 'undefined') $isFile = true;
-    if ($isFile) {
-      this.filename = SassFile.getFile($source, this);
+  parse: function(source, isFile) {
+    if (typeof isFile == 'undefined') isFile = true;
+    if (isFile) {
+      this.filename = SassFile.getFile(source, this);
 
-      if ($isFile) {
+      if (isFile) {
         this.syntax = substr(this.filename, -4);
       } else
       if (this.syntax !== SassFile.SASS && this.syntax !== SassFile.SCSS) {
@@ -454,21 +433,21 @@ var SassParser = Class.extend({
       }
 
       if (this.cache) {
-        var $cached = SassFile.getCachedFile(this.filename, this.cache_location);
-        if ($cached !== false) {
-          return $cached;
+        var cached = SassFile.getCachedFile(this.filename, this.cache_location);
+        if (cached !== false) {
+          return cached;
         }
       }
 
-      var $tree = this.toTree(file_get_contents(this.filename));
+      var tree = this.toTree(file_get_contents(this.filename));
 
       if (this.cache) {
-        SassFile.setCachedFile($tree, this.filename, this.cache_location);
+        SassFile.setCachedFile(tree, this.filename, this.cache_location);
       }
 
-      return $tree;
+      return tree;
     } else {
-      return this.toTree($source);
+      return this.toTree(source);
     }
   },
 
@@ -482,81 +461,78 @@ var SassParser = Class.extend({
   /**
    * Parse Sass source into a document tree.
    * If the tree is already created return that.
-   * @param string Sass source
-   * @return SassRootNode the root of this document tree
+   * @param {string} source - Sass source
+   * @returns {SassRootNode} the root of this document tree
    */
-  toTree: function($source) {
+  toTree: function(source) {
     if (this.syntax === SassFile.SASS) {
-      this.source = explode('\n', $source);
+      this.source = explode('\n', source);
       this.setIndentChar();
+    } else {
+      this.source = source;
     }
-    else {
-      this.source = $source;
-    }
-    unset($source);
-    var $root = new SassRootNode(this);
-    this.buildTree($root);
-    return $root;
+    //unset(source);
+    var root = new SassRootNode(this);
+    this.buildTree(root);
+    return root;
   },
 
   /**
    * Builds a parse tree under the parent node.
    * Called recursively until the source is parsed.
-   * @param SassNode the node
+   * @param {SassNode} parent
    */
-  buildTree: function($parent) {
-    var $node = this.getNode($parent);
-    while (is_object($node) && $node.isChildOf($parent)) {
-      $parent.addChild($node);
-      $node = this.buildTree($node);
+  buildTree: function(parent) {
+    var node = this.getNode(parent);
+    while (node && node.isChildOf(parent)) {
+      parent.addChild(node);
+      node = this.buildTree(node);
     }
-    return $node;
+    return node;
   },
 
   /**
    * Creates and returns the next SassNode.
    * The tpye of SassNode depends on the content of the SassToken.
-   * @return SassNode a SassNode of the appropriate type. Null when no more
+   * @returns {SassNode} a SassNode of the appropriate type or null when no more
    * source to parse.
    */
-  getNode: function($node) {
-    var $token = this.getToken();
-    if (!$token) return null;
-    switch (true) {
-      case SassDirectiveNode.isa($token):
-        return this.parseDirective($token, $node);
-        break;
-      case SassCommentNode.isa($token):
-        return new SassCommentNode($token);
-        break;
-      case SassVariableNode.isa($token):
-        return new SassVariableNode($token);
-        break;
-      case SassPropertyNode.isa($token, this.property_syntax):
-        return new SassPropertyNode($token, this.property_syntax);
-        break;
-      case SassMixinDefinitionNode.isa($token):
-        if (this.syntax === SassFile.SCSS) {
-          throw new SassException('Mixin {which} shortcut not allowed in SCSS', {'which': 'definition'}, this);
-        }
-        return new SassMixinDefinitionNode($token);
-        break;
-      case SassMixinNode.isa($token):
-        if (this.syntax === SassFile.SCSS) {
-          throw new SassException('Mixin {which} shortcut not allowed in SCSS', {'which': 'include'}, this);
-        }
-        return new SassMixinNode($token);
-        break;
-      default:
-        return new SassRuleNode($token);
-        break;
-    } // switch
+  getNode: function(node) {
+    var token = this.getToken();
+    if (!token) {
+      return null;
+    }
+    if (SassDirectiveNode.isa(token)) {
+      return this.parseDirective(token, node);
+    }
+    if (SassCommentNode.isa(token)) {
+      return new SassCommentNode(token);
+    }
+    if (SassVariableNode.isa(token)) {
+      return new SassVariableNode(token);
+    }
+    if (SassPropertyNode.isa(token, this.property_syntax)) {
+      return new SassPropertyNode(token, this.property_syntax);
+    }
+    if (SassMixinDefinitionNode.isa(token)) {
+      if (this.syntax === SassFile.SCSS) {
+        throw new SassException('Mixin {which} shortcut not allowed in SCSS', {'which': 'definition'}, this);
+      }
+      return new SassMixinDefinitionNode(token);
+    }
+    if (SassMixinNode.isa(token)) {
+      if (this.syntax === SassFile.SCSS) {
+        throw new SassException('Mixin {which} shortcut not allowed in SCSS', {'which': 'include'}, this);
+      }
+      return new SassMixinNode(token);
+    }
+    return new SassRuleNode(token);
   },
 
   /**
    * Returns a token object that contains the next source statement and
    * meta data about it.
-   * @return object
+   * @returns {object}
    */
   getToken: function() {
     return (this.syntax === SassFile.SASS ? this.sass2Token() : this.scss2Token());
@@ -567,240 +543,231 @@ var SassParser = Class.extend({
    * about it from SASS source.
    * Sass statements are passed over. Statements spanning multiple lines, e.g.
    * CSS comments and selectors, are assembled into a single statement.
-   * @return object Statement token. Null if end of source.
+   * @returns {object} Statement token. Null if end of source.
    */
   sass2Token: function() {
-    var $statement = ''; // source line being tokenized
-    var $token = null;
+    var self = this.prototype;
+    var statement = ''; // source line being tokenized
+    var token, source;
 
-    while (!$token && this.source) {
-      while (!$statement && this.source) {
-        var $source = this.source.shift();
-        $statement = $source.trim();
+    while (!token && this.source) {
+      while (!statement && this.source) {
+        source = this.source.shift();
+        statement = source.trim();
         this.line++;
       }
 
-      if (!$statement) {
+      if (!statement) {
         break;
       }
 
-      var $level = this.getLevel($source);
+      var level = this.getLevel(source);
 
       // Comment statements can span multiple lines
-      if ($statement[0] === self.BEGIN_COMMENT) {
+      if (statement[0] === self.BEGIN_COMMENT) {
         // Consume Sass comments
-        if (substr($statement, 0, self.BEGIN_SASS_COMMENT.length) === self.BEGIN_SASS_COMMENT) {
-          $statement = void 0;
-          while(this.getLevel(this.source[0]) > $level) {
+        if (substr(statement, 0, self.BEGIN_SASS_COMMENT.length) === self.BEGIN_SASS_COMMENT) {
+          statement = void 0;
+          while(this.getLevel(this.source[0]) > level) {
             this.source.shift();
             this.line++;
           }
           continue;
         } else
         // Build CSS comments
-        if (substr($statement, 0, strlen(self.BEGIN_CSS_COMMENT))  === self.BEGIN_CSS_COMMENT) {
-          while(this.getLevel(this.source[0]) > $level) {
-            $statement += '\n' + ltrim(this.source.shift());
+        if (substr(statement, 0, self.BEGIN_CSS_COMMENT.length)  === self.BEGIN_CSS_COMMENT) {
+          while(this.getLevel(this.source[0]) > level) {
+            statement += '\n' + ltrim(this.source.shift());
             this.line++;
           }
         } else {
-          this.source = $statement;
+          this.source = statement;
           throw new SassException('Illegal comment type', [], this);
         }
       } else
       // Selector statements can span multiple lines
-      if (substr($statement, -1) === SassRuleNode.CONTINUED) {
+      if (substr(statement, -1) === SassRuleNode.CONTINUED) {
         // Build the selector statement
-        while(this.getLevel(this.source[0]) === $level) {
-          $statement += ltrim(this.source.shift());
+        while(this.getLevel(this.source[0]) === level) {
+          statement += ltrim(this.source.shift());
           this.line++;
         }
       }
 
-      $token = {
-        'source': $statement,
-        'level': $level,
+      token = {
+        'source': statement,
+        'level': level,
         'filename': this.filename,
         'line': this.line - 1
       };
     }
-    return $token;
+    return token;
   },
 
   /**
-   * Returns the level of the line.
+   * Returns the level of the line. Throws if the source indentation is invalid
    * Used for .sass source
-   * @param string the source
-   * @return integer the level of the source
-   * @throws Exception if the source indentation is invalid
+   * @param {string} source - the source
+   * @returns {number} the level of the source
    */
-  getLevel: function($source) {
-    var $indent = $source.length - ltrim($source).length;
-    var $level = $indent / this.indentSpaces;
-    if (typeof $level == 'number' || substr($source, 0, $indent).indexOf(this.indentChar) == 0) {
-      this.source = $source;
+  getLevel: function(source) {
+    var indent = source.length - ltrim(source).length;
+    var level = indent / this.indentSpaces;
+    if (typeof level == 'number' || substr(source, 0, indent).indexOf(this.indentChar) === 0) {
+      this.source = source;
       throw new SassException('Invalid indentation', {}, this);
     }
-    return $level;
+    return level;
   },
 
   /**
    * Returns an object that contains the next source statement and meta data
    * about it from SCSS source.
-   * @return object Statement token. Null if end of source.
+   * @returns {object} Statement token. Null if end of source.
    */
   scss2Token: function() {
-    var $srcpos = 0; // current position in the source stream
-    var $srclen; // the length of the source stream
+    var self = this.prototype;
+    var srcpos = 0; // current position in the source stream
+    var srclen; // the length of the source stream
 
-    var $statement = '';
-    var $token = null;
-    if (!$srclen) {
-      $srclen = this.source.length;
+    var statement = '';
+    var token = null;
+    if (!srclen) {
+      srclen = this.source.length;
     }
-    while (!$token && $srcpos < $srclen) {
-      $c = this.source[$srcpos++];
-      switch ($c) {
+    while (!token && srcpos < srclen) {
+      var c = this.source[srcpos++];
+      switch (c) {
         case self.BEGIN_COMMENT:
-          if (substr(this.source, $srcpos-1, strlen(self.BEGIN_SASS_COMMENT)) === self.BEGIN_SASS_COMMENT) {
-            while (this.source[$srcpos++] !== "\n") void 0;
-            $statement += "\n";
+          if (substr(this.source, srcpos-1, self.BEGIN_SASS_COMMENT.length) === self.BEGIN_SASS_COMMENT) {
+            while (this.source[srcpos++] !== "\n") void 0;
+            statement += "\n";
           } else
-          if (substr(this.source, $srcpos-1, strlen(self.BEGIN_CSS_COMMENT)) === self.BEGIN_CSS_COMMENT) {
-            if (ltrim($statement)) {
+          if (substr(this.source, srcpos-1, self.BEGIN_CSS_COMMENT.length) === self.BEGIN_CSS_COMMENT) {
+            if (ltrim(statement)) {
               throw new SassException('Invalid {what}', {'what': 'comment'}, {
-                'source': $statement,
+                'source': statement,
                 'filename': this.filename,
                 'line': this.line
               });
             }
-            $statement += $c + this.source[$srcpos++];
-            while (substr(this.source, $srcpos, strlen(self.END_CSS_COMMENT)) !== self.END_CSS_COMMENT) {
-              $statement += this.source[$srcpos++];
+            statement += c + this.source[srcpos++];
+            while (substr(this.source, srcpos, self.END_CSS_COMMENT.length) !== self.END_CSS_COMMENT) {
+              statement += this.source[srcpos++];
             }
-            $srcpos += strlen(self.END_CSS_COMMENT);
-            $token = this.createToken($statement.self.END_CSS_COMMENT);
+            srcpos += self.END_CSS_COMMENT.length;
+            token = this.createToken(statement.self.END_CSS_COMMENT);
           } else {
-            $statement += $c;
+            statement += c;
           }
           break;
         case self.DOUBLE_QUOTE:
         case self.SINGLE_QUOTE:
-          $statement += $c;
-          while (this.source[$srcpos] !== $c) {
-            $statement += this.source[$srcpos++];
+          statement += c;
+          while (this.source[srcpos] !== c) {
+            statement += this.source[srcpos++];
           }
-          $statement += this.source[$srcpos++];
+          statement += this.source[srcpos++];
           break;
         case self.BEGIN_INTERPOLATION:
-          $statement += $c;
-          if (substr(this.source, $srcpos-1, self.BEGIN_INTERPOLATION_BLOCK.length) === self.BEGIN_INTERPOLATION_BLOCK) {
-            while (this.source[$srcpos] !== self.END_BLOCK) {
-              $statement += this.source[$srcpos++];
+          statement += c;
+          if (substr(this.source, srcpos-1, self.BEGIN_INTERPOLATION_BLOCK.length) === self.BEGIN_INTERPOLATION_BLOCK) {
+            while (this.source[srcpos] !== self.END_BLOCK) {
+              statement += this.source[srcpos++];
             }
-            $statement += this.source[$srcpos++];
+            statement += this.source[srcpos++];
           }
           break;
         case self.BEGIN_BLOCK:
         case self.END_BLOCK:
         case self.END_STATEMENT:
-          $token = this.createToken($statement + $c);
-          if (!$token) $statement = '';
+          token = this.createToken(statement + c);
+          if (!token) statement = '';
           break;
         default:
-          $statement += $c;
+          statement += c;
           break;
       }
     }
 
-    if (!$token)
-      $srclen = $srcpos = 0;
+    if (!token)
+      srclen = srcpos = 0;
 
-    return $token;
+    return token;
   },
 
   /**
    * Returns an object that contains the source statement and meta data about
    * it.
    * If the statement is just and end block we update the meta data and return null.
-   * @param string source statement
-   * @return SassToken
+   * @param {string} statement - source statement
+   * @returns {SassToken}
    */
-  createToken: function($statement) {
-    var $level = 0;
+  createToken: function(statement) {
+    var self = this.prototype;
+    var level = 0;
 
-    this.line += substr_count($statement, '\n');
-    $statement = trim($statement);
-    if (substr($statement, 0, self.BEGIN_CSS_COMMENT.length) !== self.BEGIN_CSS_COMMENT) {
-      $statement = $statement.replace(/[\r\n]/g, '');
+    this.line += statement.split('\n').length - 1;
+    statement = statement.trim();
+    if (substr(statement, 0, self.BEGIN_CSS_COMMENT.length) !== self.BEGIN_CSS_COMMENT) {
+      statement = statement.replace(/[\r\n]/g, '');
     }
-    var $last = substr($statement, -1);
+    var last = substr(statement, -1);
     // Trim the statement removing whitespace, end statement (;), begin block ({), and (unless the statement ends in an interpolation block) end block (})
-    $statement = rtrim($statement, ' '.self.BEGIN_BLOCK.self.END_STATEMENT);
-    $statement = (preg_match('/#\{.+?\}$/i', $statement) ? $statement : rtrim($statement, self.END_BLOCK));
-    var $token = ($statement ? {
-      'source': $statement,
-      'level': $level,
+    statement = rtrim(statement, ' '.self.BEGIN_BLOCK.self.END_STATEMENT);
+    statement = (statement.match(/#\{.+?\}$/i) ? statement : rtrim(statement, self.END_BLOCK));
+    var token = (statement ? {
+      'source': statement,
+      'level': level,
       'filename': this.filename,
       'line': this.line
     } : null);
-    $level += ($last === self.BEGIN_BLOCK ? 1 : ($last === self.END_BLOCK ? -1 : 0));
-    return $token;
+    level += (last === self.BEGIN_BLOCK ? 1 : (last === self.END_BLOCK ? -1 : 0));
+    return token;
   },
 
   /**
    * Parses a directive
-   * @param SassToken token to parse
-   * @param SassNode parent node
-   * @return SassNode a Sass directive node
+   * @param {SassToken} token - token to parse
+   * @param {SassNode} parent - parent node
+   * @returns {SassNode} a Sass directive node
    */
-  parseDirective: function($token, $parent) {
-    var $i, $source;
-    switch (SassDirectiveNode.extractDirective($token)) {
+  parseDirective: function(token, parent) {
+    var i, source;
+    switch (SassDirectiveNode.extractDirective(token)) {
       case '@extend':
-        return new SassExtendNode($token);
-        break;
+        return new SassExtendNode(token);
       case '@mixin':
-        return new SassMixinDefinitionNode($token);
-        break;
+        return new SassMixinDefinitionNode(token);
       case '@include':
-        return new SassMixinNode($token);
-        break;
+        return new SassMixinNode(token);
       case '@import':
         if (this.syntax == SassFile.SASS) {
-          $i = 0;
-          $source = '';
-          while (this.source && !$source) {
-            $source = this.source[$i++];
+          i = 0;
+          source = '';
+          while (this.source && !source) {
+            source = this.source[i++];
           }
-          if ($source && this.getLevel($source) > $token.level) {
-            throw new SassException('Nesting not allowed beneath {what}', {'what': '@import directive'}, $token);
+          if (source && this.getLevel(source) > token.level) {
+            throw new SassException('Nesting not allowed beneath {what}', {'what': '@import directive'}, token);
           }
         }
-        return new SassImportNode($token);
-        break;
+        return new SassImportNode(token);
       case '@for':
-        return new SassForNode($token);
-        break;
+        return new SassForNode(token);
       case '@if':
-        return new SassIfNode($token);
-        break;
+        return new SassIfNode(token);
       case '@else': // handles else and else if directives
-        return new SassElseNode($token);
-        break;
+        return new SassElseNode(token);
       case '@do':
       case '@while':
-        return new SassWhileNode($token);
-        break;
+        return new SassWhileNode(token);
       case '@debug':
-        return new SassDebugNode($token);
-        break;
+        return new SassDebugNode(token);
       case '@warn':
-        return new SassDebugNode($token, true);
-        break;
+        return new SassDebugNode(token, true);
       default:
-        return new SassDirectiveNode($token);
-        break;
+        return new SassDirectiveNode(token);
     }
   },
 
@@ -809,22 +776,21 @@ var SassParser = Class.extend({
    * The first character of the first indented line determines the character.
    * If this is a space the number of spaces determines the indentSpaces; this
    * is always 1 if the indent character is a tab.
-   * Only used for .sass files.
-   * @throws SassException if the indent is mixed or
+   * Only used for .sass files. Throws if the indent is mixed or
    * the indent character can not be determined
    */
   setIndentChar: function() {
-    for (var $l in this.source) {
-      var $source = this.source[$l];
-      if ($source && in_array($source[0], this.indentChars)) {
-        this.indentChar = $source[0];
-        for  (var $i = 0, $len = $source.length; $i < $len && $source[$i] == this.indentChar; $i++);
-        if ($i < $len && ~this.indentChars.indexOf($source.charAt($i))) {
-          this.line = ++$l;
-          this.source = $source;
+    for (var l in this.source) {
+      var source = this.source[l];
+      if (source && ~this.indentChars.indexOf(source[0])) {
+        this.indentChar = source[0];
+        for  (var i = 0, len = source.length; i < len && source[i] == this.indentChar; i++);
+        if (i < len && ~this.indentChars.indexOf(source.charAt(i))) {
+          this.line = ++l;
+          this.source = source;
           throw new SassException('Mixed indentation not allowed', {}, this);
         }
-        this.indentSpaces = (this.indentChar == ' ' ? $i : 1);
+        this.indentSpaces = (this.indentChar == ' ' ? i : 1);
         return;
       }
     }

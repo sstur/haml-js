@@ -1,27 +1,27 @@
-/**
- * HamlJS exception.
- * @copyright   Copyright (c) 2010 PBM Web Development
- * @license     see license.txt
- * @package     HamlJS
- */
-
-require('./hamljs');
+var HamlJS = require('./hamljs');
+var Class = require('./lib/class');
 
 /**
- * HamlJS exception class.
- * Base class for HamlJS::Haml and HamlJS::Sass exceptions.
- * Translates exception messages.
- * @package     HamlJS
+ * @class Exception
+ *
+ * Base class for Haml Exception and Sass Exception
+ * Translates and throws exceptions.
  */
-var HamlJSException = Exception.extend({
+HamlJS.Exception = module.exports = Class.extend({
   /**
-   * HamlJS Exception.
-   * @param string Category (haml|sass)
-   * @param string Exception message
-   * @param array parameters to be applied to the message using `strtr`.
+   * @param {String} category - category (haml|sass)
+   * @param {String} message - exception message
+   * @param {Object} params - parameters to be applied to the message using `strtr`
+   * @param {Object} object - object with source code and meta data
    */
-  init: function($category, $message, $params, $object) {
-    this._super(this.t($category, $message, $params) +
-        (is_object($object) ? ": " + $object.filename + "::" + $object.line + "\nSource: " + $object.source : ''));
+  init: function(category, message, params, object) {
+    throw new Error(HamlJS.t(category, message, params) + this.details(object));
+  },
+  /**
+   * @private
+   * @param {Object} object
+   */
+  details: function(object) {
+    return (object) ? ": " + object.filename + "::" + object.line + "\nSource: " + object.source : '';
   }
 });

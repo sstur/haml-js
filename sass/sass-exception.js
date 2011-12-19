@@ -1,26 +1,17 @@
-/**
- * Sass exception.
- * @copyright   Copyright (c) 2010 PBM Web Development
- * @license     see license.txt
- * @package     HamlJS
- * @subpackage  Sass
- */
-
-require('../hamljs-exception');
+var HamlJS = require('./hamljs');
+var Exception = require('../hamljs-exception');
 
 /**
- * Sass exception class.
- * @package     HamlJS
- * @subpackage  Sass
+ * @class Sass exception
+ * @extends HamlJS.Exception
  */
-var SassException = HamlJSException.extend({
+var SassException = module.exports = Exception.extend({
   /**
-   * Sass Exception.
-   * @param string Exception message
-   * @param array parameters to be applied to the message using `strtr`.
-   * @param object object with source code and meta data
+   * @param {String} message - Exception message
+   * @param {Object} params - parameters to be applied to the message using `strtr`.
+   * @param {Object} object - object with source code and meta data
    */
-  init: function($message, $params, $object) {
-    this._super('sass', $message, $params, $object);
+  init: function(message, params, object) {
+    this._super('sass', message, params, object);
   }
 });

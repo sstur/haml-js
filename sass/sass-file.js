@@ -3,8 +3,8 @@
 
 var Class = require('../lib/class');
 
+var Sass = require('./sass');
 var SassParser = require('./sass-parser');
-var SassException = require('./sass-exception');
 
 /**
  * @class SassFile
@@ -89,7 +89,7 @@ var SassFile = module.exports = Class.extend({
       }
     }
 
-    throw new SassException('Unable to find {what}: {filename}', {'what': 'import file', 'filename': filename});
+    throw new Sass.Exception('Unable to find {what}: {filename}', {'what': 'import file', 'filename': filename});
   },
 
   /**

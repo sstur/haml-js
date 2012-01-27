@@ -1,0 +1,22 @@
+{
+  "predef": [],
+
+  "maxerr": 200,
+  "indent": 2,
+
+  "undef": true,
+  "noarg": true,
+
+  "boss": true,
+  "eqnull": true,
+  "es5": true,
+  "expr": true,
+  "laxbreak": true,
+  "proto": true,
+  "sub": true,
+
+  "nonstandard": true,
+  "node": true,
+  "wsh": true
+
+}

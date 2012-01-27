@@ -17,27 +17,25 @@
 
 var Class = require('../lib/class');
 
-var HamlJS = require('../haml');
+var Sass = require('./sass');
 var SassFile = require('./sass-file');
-var SassException = require('./sass-exception');
 var SassRenderer = require('./renderers/sass-renderer');
-var NODES = require('./tree/sass-node');
 
-var SassRootNode = NODES.SassRootNode
-  , SassDirectiveNode = NODES.SassDirectiveNode
-  , SassCommentNode = NODES.SassCommentNode
-  , SassVariableNode = NODES.SassVariableNode
-  , SassPropertyNode = NODES.SassPropertyNode
-  , SassMixinDefinitionNode = NODES.SassMixinDefinitionNode
-  , SassMixinNode = NODES.SassMixinNode
-  , SassRuleNode = NODES.SassRuleNode
-  , SassExtendNode = NODES.SassExtendNode
-  , SassImportNode = NODES.SassImportNode
-  , SassForNode = NODES.SassForNode
-  , SassIfNode = NODES.SassIfNode
-  , SassElseNode = NODES.SassElseNode
-  , SassWhileNode = NODES.SassWhileNode
-  , SassDebugNode = NODES.SassDebugNode;
+var SassRootNode = require('./tree/sass-root-node')
+  , SassDirectiveNode = require('./tree/sass-directive-node')
+  , SassCommentNode = require('./tree/sass-comment-node')
+  , SassVariableNode = require('./tree/sass-variable-node')
+  , SassPropertyNode = require('./tree/sass-property-node')
+  , SassMixinDefinitionNode = require('./tree/sass-mixin-definition-node')
+  , SassMixinNode = require('./tree/sass-mixin-node')
+  , SassRuleNode = require('./tree/sass-rule-node')
+  , SassExtendNode = require('./tree/sass-extend-node')
+  , SassImportNode = require('./tree/sass-import-node')
+  , SassForNode = require('./tree/sass-for-node')
+  , SassIfNode = require('./tree/sass-if-node')
+  , SassElseNode = require('./tree/sass-else-node')
+  , SassWhileNode = require('./tree/sass-while-node')
+  , SassDebugNode = require('./tree/sass-debug-node');
 
 /**
  * @class SassParser
@@ -270,12 +268,12 @@ var SassParser = module.exports = Class.extend({
    */
   init: function(opts) {
     if (!opts) {
-      throw new SassException('{what} must be a {type}', {'what': 'options', 'type': 'array'});
+      throw new Sass.Exception('{what} must be a {type}', {'what': 'options', 'type': 'array'});
     }
     if (opts['language']) {
-      HamlJS.language = opts['language'];
+      Sass.language = opts['language'];
     }
-    var self = this.prototype;
+    var self = this.constructor.prototype;
 
     //TODO: make this non-blocking
     if (opts['extensions']) {
@@ -429,7 +427,7 @@ var SassParser = module.exports = Class.extend({
         this.syntax = substr(this.filename, -4);
       } else
       if (this.syntax !== SassFile.SASS && this.syntax !== SassFile.SCSS) {
-        throw new SassException('Invalid {what}', {'what': 'syntax option'});
+        throw new Sass.Exception('Invalid {what}', {'what': 'syntax option'});
       }
 
       if (this.cache) {
@@ -516,13 +514,13 @@ var SassParser = module.exports = Class.extend({
     }
     if (SassMixinDefinitionNode.isa(token)) {
       if (this.syntax === SassFile.SCSS) {
-        throw new SassException('Mixin {which} shortcut not allowed in SCSS', {'which': 'definition'}, this);
+        throw new Sass.Exception('Mixin {which} shortcut not allowed in SCSS', {'which': 'definition'}, this);
       }
       return new SassMixinDefinitionNode(token);
     }
     if (SassMixinNode.isa(token)) {
       if (this.syntax === SassFile.SCSS) {
-        throw new SassException('Mixin {which} shortcut not allowed in SCSS', {'which': 'include'}, this);
+        throw new Sass.Exception('Mixin {which} shortcut not allowed in SCSS', {'which': 'include'}, this);
       }
       return new SassMixinNode(token);
     }
@@ -546,7 +544,7 @@ var SassParser = module.exports = Class.extend({
    * @returns {object} Statement token. Null if end of source.
    */
   sass2Token: function() {
-    var self = this.prototype;
+    var self = this.constructor.prototype;
     var statement = ''; // source line being tokenized
     var token, source;
 
@@ -582,7 +580,7 @@ var SassParser = module.exports = Class.extend({
           }
         } else {
           this.source = statement;
-          throw new SassException('Illegal comment type', [], this);
+          throw new Sass.Exception('Illegal comment type', [], this);
         }
       } else
       // Selector statements can span multiple lines
@@ -615,7 +613,7 @@ var SassParser = module.exports = Class.extend({
     var level = indent / this.indentSpaces;
     if (typeof level == 'number' || substr(source, 0, indent).indexOf(this.indentChar) === 0) {
       this.source = source;
-      throw new SassException('Invalid indentation', {}, this);
+      throw new Sass.Exception('Invalid indentation', {}, this);
     }
     return level;
   },
@@ -626,7 +624,7 @@ var SassParser = module.exports = Class.extend({
    * @returns {object} Statement token. Null if end of source.
    */
   scss2Token: function() {
-    var self = this.prototype;
+    var self = this.constructor.prototype;
     var srcpos = 0; // current position in the source stream
     var srclen; // the length of the source stream
 
@@ -645,7 +643,7 @@ var SassParser = module.exports = Class.extend({
           } else
           if (substr(this.source, srcpos-1, self.BEGIN_CSS_COMMENT.length) === self.BEGIN_CSS_COMMENT) {
             if (ltrim(statement)) {
-              throw new SassException('Invalid {what}', {'what': 'comment'}, {
+              throw new Sass.Exception('Invalid {what}', {'what': 'comment'}, {
                 'source': statement,
                 'filename': this.filename,
                 'line': this.line
@@ -704,7 +702,7 @@ var SassParser = module.exports = Class.extend({
    * @returns {SassToken}
    */
   createToken: function(statement) {
-    var self = this.prototype;
+    var self = this.constructor.prototype;
     var level = 0;
 
     this.line += statement.split('\n').length - 1;
@@ -749,7 +747,7 @@ var SassParser = module.exports = Class.extend({
             source = this.source[i++];
           }
           if (source && this.getLevel(source) > token.level) {
-            throw new SassException('Nesting not allowed beneath {what}', {'what': '@import directive'}, token);
+            throw new Sass.Exception('Nesting not allowed beneath {what}', {'what': '@import directive'}, token);
           }
         }
         return new SassImportNode(token);
@@ -788,7 +786,7 @@ var SassParser = module.exports = Class.extend({
         if (i < len && ~this.indentChars.indexOf(source.charAt(i))) {
           this.line = ++l;
           this.source = source;
-          throw new SassException('Mixed indentation not allowed', {}, this);
+          throw new Sass.Exception('Mixed indentation not allowed', {}, this);
         }
         this.indentSpaces = (this.indentChar == ' ' ? i : 1);
         return;

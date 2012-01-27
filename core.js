@@ -1,14 +1,18 @@
-/*global strtr */
+var Class = require('./lib/class');
+
 /**
- * @namespace HamlJS contains properties and static support methods
+ * @namespace App contains properties and static support methods
  *
  * @property {String} language - Language used to translate messages
  * @property {Object} messages - Messages used for translation
  *
  */
-var HamlJS = exports.HamlJS = {
+module.exports = {
+
   language: null,
+
   messages: {},
+
   /**
    * Translates a message to the specified language.
    * @param {String} category - message category
@@ -22,6 +26,7 @@ var HamlJS = exports.HamlJS = {
     }
     return params ? strtr(message, params) : message;
   },
+
   /**
    * Translates a message to the specified language.
    * If the language or the message in the specified language is not defined the
@@ -34,6 +39,7 @@ var HamlJS = exports.HamlJS = {
     if (this.messages[category] == null) this.loadMessages(category);
     return (!this.messages[category] || !this.messages[category][message]) ? message : this.messages[category][message];
   },
+
   /**
    * Loads the specified language message file for translation.
    * Message files are files in the "category/messages" directory
@@ -52,5 +58,31 @@ var HamlJS = exports.HamlJS = {
     //if (file_exists(messageFile)) {
     //  this.messages[category] = loadLanguageFile(messageFile);
     //}
-  }
+  },
+
+  /**
+   * @class Exception
+   *
+   * Base class for Haml Exception and Sass Exception
+   * Translates and throws exceptions.
+   */
+  Exception: Class.extend({
+    /**
+     * @param {String} category - category (haml|sass)
+     * @param {String} message - exception message
+     * @param {Object} params - parameters to be applied to the message using `strtr`
+     * @param {Object} object - object with source code and meta data
+     */
+    init: function(category, message, params, object) {
+      throw new Error(App.t(category, message, params) + this.details(object));
+    },
+    /**
+     * @private
+     * @param {Object} object
+     */
+    details: function(object) {
+      return (object) ? ": " + object.filename + "::" + object.line + "\nSource: " + object.source : '';
+    }
+  })
+
 };

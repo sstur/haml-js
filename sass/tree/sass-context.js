@@ -60,7 +60,7 @@ var SassContext = module.exports = Class.extend({
     if (this.parent) {
       return this.parent.getMixin(name);
     }
-    throw new Sass.ContextException('Undefined {what}: {name}', {'{what}': 'Mixin', '{name}': name}, this.node);
+    throw new Sass.ContextException('Undefined {what}: {name}', {'what': 'Mixin', 'name': name}, this.node);
   },
 
   /**
@@ -76,7 +76,7 @@ var SassContext = module.exports = Class.extend({
     if (this.parent) {
       return this.parent.getVariable(name);
     } else {
-      throw new Sass.ContextException('Undefined {what}: {name}', {'{what}': 'Variable', '{name}': name}, this.node);
+      throw new Sass.ContextException('Undefined {what}: {name}', {'what': 'Variable', 'name': name}, this.node);
     }
   },
 

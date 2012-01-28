@@ -75,7 +75,7 @@ var SassPropertyNode = SassNode.extend({
     this.name = matches[this.NAME];
     this.value = matches[this.VALUE];
     if (matches[this.SCRIPT] === this.IS_SCRIPT) {
-      this.addWarning('Setting CSS properties with "=" is deprecated; use "{name}: {value};"', {'{name}': this.name, '{value}': this.value});
+      this.addWarning('Setting CSS properties with "=" is deprecated; use "{name}: {value};"', {'name': this.name, 'value': this.value});
     }
   },
 

@@ -48,7 +48,7 @@ var SassImportNode = module.exports = SassNode.extend({
         file = util.trim(file, '\'"');
         var tree = this.getTree(this.getFile(file, this.parser), this.parser);
         if (!tree) {
-          throw new Sass.ImportNodeException('Unable to create document tree for {file}', {'{file}': file}, this);
+          throw new Sass.ImportNodeException('Unable to create document tree for {file}', {'file': file}, this);
         } else {
           util.array_merge(imported, tree.parse(context).children);
         }

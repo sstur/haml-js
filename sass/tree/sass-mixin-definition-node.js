@@ -37,7 +37,7 @@ var SassMixinDefinitionNode = module.exports = SassNode.extend({
     this._super(token);
     var matches = token.source.match(this.MATCH);
     if (!matches) {
-      throw new Sass.MixinDefinitionNodeException('Invalid {what}', {'{what}': 'Mixin'}, this);
+      throw new Sass.MixinDefinitionNodeException('Invalid {what}', {'what': 'Mixin'}, this);
     }
     this.name = matches[this.NAME];
     if (matches[this.ARGUMENTS]) {

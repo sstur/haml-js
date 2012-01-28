@@ -51,7 +51,7 @@ var SassForNode = module.exports = SassNode.extend({
     this._super(token);
     var matches = token.source.match(this.MATCH);
     if (!matches) {
-      throw new Sass.SassForNodeException('Invalid {what}', {'{what}': '@for directive'}, this);
+      throw new Sass.SassForNodeException('Invalid {what}', {'what': '@for directive'}, this);
     }
     this.variable  = matches[this.VARIABLE];
     this.from      = matches[this.FROM];

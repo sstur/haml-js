@@ -97,7 +97,7 @@ var SassScriptOperation = Class.extend({
     if (this[name]) {
       return this[name];
     } else {
-      throw new Sass.ScriptOperationException('Unknown property: {name}', {'{name}': name}, SassScriptParser.context.node);
+      throw new Sass.ScriptOperationException('Unknown property: {name}', {'name': name}, SassScriptParser.context.node);
     }
   },
 
@@ -111,7 +111,7 @@ var SassScriptOperation = Class.extend({
   perform: function(operands) {
     var $operation;
     if (operands.length !== this.operandCount) {
-      throw new Sass.ScriptOperationException('Incorrect operand count for {operation}; expected {expected}, received {received}', {'{expected}':this.operandCount, '{received}':operands.length}, SassScriptParser.context.node);
+      throw new Sass.ScriptOperationException('Incorrect operand count for {operation}; expected {expected}, received {received}', {'expected':this.operandCount, 'received':operands.length}, SassScriptParser.context.node);
     }
 
     if (operands.length > 1 && operands[1] == null) {
@@ -127,7 +127,7 @@ var SassScriptOperation = Class.extend({
       return operands[0][$operation](operands[1] || null);
     }
 
-    throw new Sass.ScriptOperationException('Undefined operation "{operation}" for {what}',  {'{operation}':$operation}, SassScriptParser.context.node);
+    throw new Sass.ScriptOperationException('Undefined operation "{operation}" for {what}',  {'operation':$operation}, SassScriptParser.context.node);
   },
 
   /**

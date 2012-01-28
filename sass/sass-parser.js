@@ -388,7 +388,7 @@ var SassParser = module.exports = Class.extend({
    * @returns {string} CSS
    */
   toCss: function(source, isFile) {
-    if (typeof isFile == 'undefined') isFile = true;
+    if (isFile == null) isFile = true;
     return this.parse(source, isFile).render();
   },
 
@@ -404,40 +404,32 @@ var SassParser = module.exports = Class.extend({
    * @returns {SassRootNode} Root node of document tree
    */
   parse: function(source, isFile) {
-    if (typeof isFile == 'undefined') isFile = true;
+    if (isFile == null) isFile = true;
     if (isFile) {
-      this.filename = SassFile.getFile(source, this);
-
-      if (isFile) {
-        this.syntax = this.filename.substr(-4);
-      } else
-      if (this.syntax !== SassFile.SASS && this.syntax !== SassFile.SCSS) {
-        throw new Sass.Exception('Invalid {what}', {'what': 'syntax option'});
-      }
-
-      if (this.cache) {
-        var cached = SassFile.getCachedFile(this.filename, this.cache_location);
-        if (cached !== false) {
-          return cached;
-        }
-      }
-
-      var tree = this.toTree(util.file_get_contents(this.filename));
-
-      if (this.cache) {
-        SassFile.setCachedFile(tree, this.filename, this.cache_location);
-      }
-
-      return tree;
+      throw new Error('Filesystem not implemented');
+      //TODO: remove filesystem calls
+      //this.filename = SassFile.getFile(source, this);
+      //if (isFile) {
+      //  this.syntax = this.filename.substr(-4);
+      //} else
+      //if (this.syntax !== SassFile.SASS && this.syntax !== SassFile.SCSS) {
+      //  throw new Sass.Exception('Invalid {what}', {'what': 'syntax option'});
+      //}
+      //if (this.cache) {
+      //  var cached = SassFile.getCachedFile(this.filename, this.cache_location);
+      //  if (cached !== false) {
+      //    return cached;
+      //  }
+      //}
+      //var tree = this.toTree(util.file_get_contents(this.filename));
+      //if (this.cache) {
+      //  SassFile.setCachedFile(tree, this.filename, this.cache_location);
+      //}
+      //return tree;
     } else {
       return this.toTree(source);
     }
   },
-
-
-
-  //TODO: make all methods below private
-
 
 
 

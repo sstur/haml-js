@@ -63,7 +63,7 @@ var SassMixinNode = module.exports = SassNode.extend({
       if (value) {
         context.setVariable(name, this.evaluate(value, context));
       } else {
-        throw new Sass.MixinNodeException("Mixin.{mname}: Required variable ({vname}) not given.\nMixin defined: {dfile}.{dline}\nMixin used", {'{vname}': name, '{mname}': this.name, '{dfile}': mixin.token.filename, '{dline}': mixin.token.line}, this);
+        throw new Sass.MixinNodeException("Mixin.{mname}: Required variable ({vname}) not given.\nMixin defined: {dfile}.{dline}\nMixin used", {'vname': name, 'mname': this.name, 'dfile': mixin.token.filename, 'dline': mixin.token.line}, this);
       }
     }
 

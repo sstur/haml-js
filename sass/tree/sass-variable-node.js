@@ -49,10 +49,10 @@ var SassVariableNode = module.exports = SassNode.extend({
 
     // Warn about deprecated features
     if (matches[this.IDENTIFIER] === this.SASS_IDENTIFIER) {
-      this.addWarning('Variables prefixed with "!" is deprecated; use "${name}"', {'{name}': this.name});
+      this.addWarning('Variables prefixed with "!" is deprecated; use "${name}"', {'name': this.name});
     }
     if (matches[SassVariableNode.SASS_ASSIGNMENT]) {
-      this.addWarning('Setting variables with "{sassDefault}=" is deprecated; use "${name}: {value}{scssDefault}"', {'{sassDefault}': (matches[SassVariableNode.SASS_DEFAULT]) ? '||' : '', '{name}': this.name, '{value}': this.value, '{scssDefault}': (matches[SassVariableNode.SASS_DEFAULT]) ? ' !default' : ''});
+      this.addWarning('Setting variables with "{sassDefault}=" is deprecated; use "${name}: {value}{scssDefault}"', {'sassDefault': (matches[SassVariableNode.SASS_DEFAULT]) ? '||' : '', 'name': this.name, 'value': this.value, 'scssDefault': (matches[SassVariableNode.SASS_DEFAULT]) ? ' !default' : ''});
     }
   },
 

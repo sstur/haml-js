@@ -89,7 +89,7 @@ var SassScriptFunctions = module.exports = Class.extend({
         return new SassColour($rgba);
         break;
       default:
-        throw new Sass.ScriptFunctionException('Incorrect argument count for {method}; expected {expected}, received {received}', {'{expected}': '2 or 4', '{received}': arguments.length}, SassScriptParser.context.node);
+        throw new Sass.ScriptFunctionException('Incorrect argument count for {method}; expected {expected}, received {received}', {'expected': '2 or 4', 'received': arguments.length}, SassScriptParser.context.node);
     }
   },
 
@@ -626,7 +626,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    */
   percentage: function($number) {
     if (!$number instanceof SassNumber || $number.hasUnits()) {
-      throw new Sass.ScriptFunctionException('{what} must be a {type}', {'{what}': 'number', '{type}': 'unitless SassNumber'}, SassScriptParser.context.node);
+      throw new Sass.ScriptFunctionException('{what} must be a {type}', {'what': 'number', 'type': 'unitless SassNumber'}, SassScriptParser.context.node);
     }
     $number.value *= 100;
     $number.units = '%';

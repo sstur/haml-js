@@ -44,13 +44,12 @@ var SassScriptFunction = Class.extend({
     var name = util.replace(this.name, '-', '_');
     SassScriptParser.context.node.parser.function_paths.forEach(function(path) {
       var _path = path.split('/');
-      var _class = util.ucfirst(_path[_path.length - 2]);
       util.scandir(path).slice(2).forEach(function(file) {
         var filename = path + '/' + file;
         if (util.is_file(filename)) {
-          util.load_file(filename);
-          var cls = 'SassExtentions' + _class + 'Functions' + util.ucfirst(file.slice(0, -4));
           //TODO: fix
+          //util.load_file(filename);
+          //var cls = 'SassExtentions' + util.ucfirst(_path[_path.length - 2]) + 'Functions' + ucfirst(file.slice(0, -4));
           //if (method_exists(cls, name)) {
           //  return call_user_func_array(array(cls, name), this.args);
           //}

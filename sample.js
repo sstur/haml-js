@@ -1,3 +1,5 @@
+"use strict";
+
 var SassParser = require('./sass/sass-parser');
 
 var sass = new SassParser({/* options */});

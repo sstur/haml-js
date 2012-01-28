@@ -33,3 +33,9 @@ Sass.ScriptParserException = Sass.Exception.extend({});
 Sass.ScriptLexerException = Sass.ScriptParserException.extend({});
 Sass.ScriptOperationException = Sass.ScriptParserException.extend({});
 Sass.ScriptFunctionException = Sass.ScriptParserException.extend({});
+
+Sass.LiteralException = Sass.ScriptParserException.extend({});
+Sass.BooleanException = Sass.LiteralException.extend({});
+Sass.ColourException = Sass.LiteralException.extend({});
+Sass.NumberException = Sass.LiteralException.extend({});
+Sass.StringException = Sass.LiteralException.extend({});

@@ -1,3 +1,5 @@
+"use strict";
+var util = require('./lib/util');
 var Class = require('./lib/class');
 
 /**
@@ -7,7 +9,7 @@ var Class = require('./lib/class');
  * @property {Object} messages - Messages used for translation
  *
  */
-module.exports = {
+var App = module.exports = {
 
   language: null,
 
@@ -24,7 +26,7 @@ module.exports = {
     if (this.language) {
       message = this.translate(category, message);
     }
-    return params ? strtr(message, params) : message;
+    return params ? util.strtr(message, params) : message;
   },
 
   /**

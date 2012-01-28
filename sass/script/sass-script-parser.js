@@ -17,7 +17,7 @@ var SassScriptOperation = require('./sass-script-operation');
  *  the calculated result returned.
  */
 var SassScriptParser = module.exports = Class.extend({
-  MATCH_INTERPOLATION: /(?<!\\\\)#\{(.*?)\}/g,
+  MATCH_INTERPOLATION: /(?:<!\\\\)#\{(.*?)\}/g,
   DEFAULT_ENV: 0,
   CSS_RULE: 1,
   CSS_PROPERTY: 2,
@@ -47,7 +47,7 @@ var SassScriptParser = module.exports = Class.extend({
    * @return {string} the interpolated text
    */
   interpolate: function(string, context) {
-    var matches = match_all(this.MATCH_INTERPOLATION, string);
+    var matches = util.match_all(this.MATCH_INTERPOLATION, string);
     for (var i = 0, n = matches.length; i < n; i++) {
       matches[1][i] = this.evaluate(matches[1][i], context).toString();
     }
@@ -105,6 +105,7 @@ var SassScriptParser = module.exports = Class.extend({
 
     var tokens = this.lexer.lex(expression, context);
 
+    var c;
     for (var i in tokens) {
       var token = tokens[i];
       // If two literals/expessions are seperated by whitespace use the concat operator
@@ -138,7 +139,6 @@ var SassScriptParser = module.exports = Class.extend({
         // If the token is a right parenthesis:
         if (token.operator == SassScriptOperation.operators[')'][0]) {
           parenthesis--;
-          var c;
           while (c = operatorStack.length) {
             // If the token at the top of the stack is a left parenthesis
             if (operatorStack[c - 1].operator == SassScriptOperation.operators['('][0]) {
@@ -151,7 +151,7 @@ var SassScriptParser = module.exports = Class.extend({
           }
           // If the stack runs out without finding a left parenthesis
           // there are mismatched parentheses.
-          if (c == 0) {
+          if (c === 0) {
             throw new Sass.ScriptParserException('Unmatched parentheses', {}, context.node);
           }
         }

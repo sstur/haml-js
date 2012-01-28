@@ -9,7 +9,7 @@ var SassNode = require('./sass-node');
  * @subpackage  Sass.tree
  */
 var SassVariableNode = module.exports = SassNode.extend({
-  MATCH: /^([!$])([\w-]+)\s*:?\s*((\|\|)?=)?\s*(.+?)\s*(!default)?;?$/i,
+  MATCH: /^([!$])([\w\-]+)\s*:?\s*((\|\|)?=)?\s*(.+?)\s*(!default)?;?$/i,
   IDENTIFIER: 1,
   NAME: 2,
   SASS_ASSIGNMENT: 3,

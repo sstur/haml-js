@@ -34,7 +34,7 @@ var SassNestedRenderer = module.exports = SassExpandedRenderer.extend({
    */
   renderDirective: function(node, properties) {
     var directive = this.getIndent(node) + node.directive + this.between() + this.renderProperties(properties);
-    return directive.replace(/(.*})\n$/, '$1') + this.end();
+    return directive.replace(/(.*\})\n$/, '$1') + this.end();
   },
 
   /**

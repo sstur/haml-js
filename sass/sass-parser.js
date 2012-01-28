@@ -264,8 +264,8 @@ var SassParser = module.exports = Class.extend({
     if (opts['extensions']) {
       for (var extension in opts['extensions']) {
         var extOptions = opts['extensions'][extension];
-        var configClass = require('./extensions/' + extension + '/config');
-        var config = new configClass();
+        var ConfigClass = require('./extensions/' + extension + '/config');
+        var config = new ConfigClass();
         config.config(extOptions);
 
         var lp = './extensions/' + extension + '/frameworks';

@@ -12,7 +12,7 @@ var SassScriptParser = require('../script/sass-script-parser');
 var SassPropertyNode = SassNode.extend({
   MATCH_PROPERTY_NEW: /^([^\s=:"]+)\s*(?:(= )|:)(.*?)$/,
   MATCH_PROPERTY_OLD: /^:([^\s=:]+)(?:\s*(=)\s*|\s+|$)(.*)/,
-  MATCH_PSUEDO_SELECTOR: /^:?\w[-\w]+\(?/i,
+  MATCH_PSUEDO_SELECTOR: /^:?\w[\-\w]+\(?/i,
   MATCH_INTERPOLATION: /^#\{(.*?)\}/i,
   NAME: 1,
   SCRIPT: 2,

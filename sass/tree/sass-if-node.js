@@ -28,13 +28,14 @@ var SassIfNode = module.exports = SassNode.extend({
    * @return {SassIfNode}
    */
   init: function(token, _if) {
+    var matches;
     if (_if == null) _if = true;
     this._super(token);
     if (_if) {
-      var matches = token.source.match(this.MATCH);
+      matches = token.source.match(this.MATCH);
       this.expression = matches[this.IF_EXPRESSION];
     } else {
-      var matches = token.source.match(this.MATCH_ELSE);
+      matches = token.source.match(this.MATCH_ELSE);
       this.expression = (matches.length == 1) ? null : matches[this.ELSE_EXPRESSION];
     }
   },

@@ -8,7 +8,7 @@ var SassScriptVariable = module.exports = Class.extend({
   /**
    * Regex for matching and extracting Variables
    */
-  MATCH: /^(?<!\\\\)(?:(?:!!important\b)[!\$]([\w-]+))/,
+  MATCH: /^(?:<!\\\\)(?:(?:!!important\b)[!\$]([\w\-]+))/,
 
   /**
    * @var string name of variable

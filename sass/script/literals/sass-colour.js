@@ -33,7 +33,7 @@ var SassColour = SassLiteral.extend({
   /**@#+
    * Regexes for matching and extracting colours
    */
-  MATCH: /^((#([\da-f]{6}|[\da-f]{3}))|transparent|{CSS_COLOURS})/,
+  MATCH: /^((#([\da-f]{6}|[\da-f]{3}))|transparent|CSS_COLOURS)/,
   EXTRACT_3: /#([\da-f])([\da-f])([\da-f])/,
   EXTRACT_6: /#([\da-f]{2})([\da-f]{2})([\da-f]{2})/,
   TRANSPARENT: 'transparent',
@@ -279,6 +279,7 @@ var SassColour = SassLiteral.extend({
    * @return SassColour
    */
   init: function($colour) {
+    var $matches;
     if (typeof $colour == 'string') {
       $colour = $colour.toLowerCase();
       if ($colour === this.TRANSPARENT) {
@@ -292,12 +293,12 @@ var SassColour = SassLiteral.extend({
           $colour = this.svgColours[$colour];
         }
         if ($colour.length == 4) {
-          var $matches = $colour.match(this.EXTRACT_3);
+          $matches = $colour.match(this.EXTRACT_3);
           for (var $i = 1; $i < 4; $i++) {
             $matches[$i] += $matches[$i];
           }
         } else {
-          var $matches = $colour.match(this.EXTRACT_6);
+          $matches = $colour.match(this.EXTRACT_6);
         }
 
         if (!$matches) {
@@ -735,6 +736,7 @@ var SassColour = SassLiteral.extend({
   toString: function($css3) {
     $css3 = $css3 || false;
     var $rgba = this.rgba;
+    var $colour;
     
     if ($rgba[3] == 0) {
       return 'transparent';
@@ -742,7 +744,7 @@ var SassColour = SassLiteral.extend({
     if ($rgba[3] < 1) {
       return 'rgba(' + $rgba[0] + ',' + $rgba[1] + ',' + $rgba[2] + ',' + String(Math.round($rgba[3] * 100) / 100) + ')';
     } else {
-      var $colour = '#' + util.toHex($rgba[0], 2) + util.toHex($rgba[1], 2) + util.toHex($rgba[2], 2);
+      $colour = '#' + util.toHex($rgba[0], 2) + util.toHex($rgba[1], 2) + util.toHex($rgba[2], 2);
     }
     if ($css3) {
       if (!this._svgColours) {
@@ -867,11 +869,12 @@ var SassColour = SassLiteral.extend({
    * @param string the subject string
    * @return mixed match at the start of the string or false if no match
    */
-  isa: function($subject) {
+  isa: function(subject) {
     if (!this.regex) {
-      this.regex = util.replace(this.MATCH, '{CSS_COLOURS}', Object.keys(this.svgColours).reverse().join('|'));
+      var colours = Object.keys(this.svgColours).reverse().join('|');
+      this.regex = new RegExp(this.MATCH.source.replace('CSS_COLOURS', colours));
     }
-    var $matches = $subject.toLowerCase().match(this.regex);
-    return ($matches) ? $matches[0] : false;
+    var matches = subject.toLowerCase().match(this.regex);
+    return (matches) ? matches[0] : false;
   }
 });

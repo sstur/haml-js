@@ -101,7 +101,7 @@ var SassScriptLexer = module.exports = Class.extend({
    * @return {number|boolean} match at the start of the string or false if no match
    */
   isWhitespace: function(subject) {
-    var matches = subject.match(self.MATCH_WHITESPACE);
+    var matches = subject.match(this.MATCH_WHITESPACE);
     return (matches ? matches[0] : false);
   }
 });

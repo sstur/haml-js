@@ -38,7 +38,7 @@ var SassRootNode = module.exports = SassNode.extend({
    */
   init: function(parser) {
     if (typeof parser == 'string') {
-      throw new Error('SASS Node de-serializer not implemented.')
+      throw new Error('SASS Node de-serializer not implemented.');
     }
     this._super({
       'source': '',

@@ -9,7 +9,7 @@ var SassScriptParser = require('./sass-script-parser');
  * The operation to perform.
  */
 var SassScriptOperation = Class.extend({
-  MATCH: /^(\(|\)|\+|-|\*|\/|%|<=|>=|<|>|==|!=|=|#{|}|,|and\b|or\b|xor\b|not\b)/,
+  MATCH: /^(\(|\)|\+|-|\*|\/|%|<=|>=|<|>|==|!=|=|#\{|\}|,|and\b|or\b|xor\b|not\b)/,
 
   /**
    * @var array map symbols to tokens.

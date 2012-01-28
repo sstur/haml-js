@@ -14,7 +14,7 @@ var SassScriptFunction = require('../script/sass-script-function');
  */
 var SassMixinNode = module.exports = SassNode.extend({
   NODE_IDENTIFIER: '+',
-  MATCH: /^(\+|@include\s+)([-\w]+)\s*(?:\((.*?)\))?$/i,
+  MATCH: /^(\+|@include\s+)([\-\w]+)\s*(?:\((.*?)\))?$/i,
   IDENTIFIER: 1,
   NAME: 2,
   ARGS: 3,

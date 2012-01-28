@@ -10,7 +10,7 @@ var SassNode = require('./sass-node');
  */
 var SassMixinDefinitionNode = module.exports = SassNode.extend({
   NODE_IDENTIFIER: '=',
-  MATCH: /^(=|@mixin\s+)([-\w]+)\s*(?:\((.+?)\))?\s*$/i,
+  MATCH: /^(=|@mixin\s+)([\-\w]+)\s*(?:\((.+?)\))?\s*$/i,
   IDENTIFIER: 1,
   NAME: 2,
   ARGUMENTS: 3,

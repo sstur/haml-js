@@ -97,9 +97,9 @@ var SassCompactRenderer = module.exports = SassCompressedRenderer.extend({
     var debug = '';
 
     if (node.debug_info) {
-      debug  = indent + self.DEBUG_INFO_RULE + '{';
-      debug += 'filename{' + self.DEBUG_INFO_PROPERTY + ':' + ('file://' + node.filename).replace(/([^-\w])/g, '\\$1') + ';}';
-      debug += 'line{' + self.DEBUG_INFO_PROPERTY + ":'" + node.line + "';}";
+      debug  = indent + this.DEBUG_INFO_RULE + '{';
+      debug += 'filename{' + this.DEBUG_INFO_PROPERTY + ':' + ('file://' + node.filename).replace(/([^\-\w])/g, '\\$1') + ';}';
+      debug += 'line{' + this.DEBUG_INFO_PROPERTY + ":'" + node.line + "';}";
       debug += '}\n';
     } else
     if (node.line_numbers) {

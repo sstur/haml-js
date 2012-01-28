@@ -13,8 +13,8 @@ var SassScriptFunction = Class.extend({
   /**@#+
    * Regexes for matching and extracting functions and arguments
    */
-  MATCH: /^(((-\w)|(\w))[-\w]*)\(/,
-  MATCH_FUNC: /^((?:(?:-\w)|(?:\w))[-\w]*)\((.*)\)/,
+  MATCH: /^(((-\w)|(\w))[\-\w]*)\(/,
+  MATCH_FUNC: /^((?:(?:-\w)|(?:\w))[\-\w]*)\((.*)\)/,
   SPLIT_ARGS: /\s*((?:['"].*?["'])|(?:.+?(?:\(.*\).*?)?))\s*(?:,|$)/,
   NAME: 1,
   ARGS: 2,

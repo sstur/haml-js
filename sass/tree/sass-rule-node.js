@@ -297,6 +297,7 @@ var SassRuleNode = module.exports = SassNode.extend({
 
     for (var i = 0, l = string.length; i < l; i++) {
       var c = string.charAt(i);
+      var _c;
       if (c === this.CONTINUED && !inString && !interpolate) {
         selectors.push(selector.trim());
         selector = '';
@@ -304,7 +305,7 @@ var SassRuleNode = module.exports = SassNode.extend({
         selector += c;
         if (c === '"' || c === "'") {
           do {
-            var _c = string.charAt(++i);
+            _c = string.charAt(++i);
             selector += _c;
           } while (_c !== c);
         } else

@@ -68,7 +68,6 @@ var SassScriptFunctions = module.exports = Class.extend({
         SassLiteral.assertType($alpha, 'SassNumber');
         SassLiteral.assertInRange($alpha, 0, 1);
         return $colour['with']({'alpha': $alpha.value});
-        break;
       case 4:
         var $rgba = [];
         var $components = Array.prototype.slice.call(arguments);
@@ -87,7 +86,6 @@ var SassScriptFunctions = module.exports = Class.extend({
         SassLiteral.assertInRange($alpha, 0, 1);
         $rgba.push($alpha.value);
         return new SassColour($rgba);
-        break;
       default:
         throw new Sass.ScriptFunctionException('Incorrect argument count for {method}; expected {expected}, received {received}', {'expected': '2 or 4', 'received': arguments.length}, SassScriptParser.context.node);
     }
@@ -520,7 +518,7 @@ var SassScriptFunctions = module.exports = Class.extend({
     SassLiteral.assertType($colour, 'SassColour');
     SassLiteral.assertType($amount, 'SassNumber');
     SassLiteral.assertInRange($amount, $min, $max, $units);
-    if (!(typeof $ofCurrent == 'boolean')) {
+    if (typeof $ofCurrent != 'boolean') {
       SassLiteral.assertType($ofCurrent, 'SassBoolean');
       $ofCurrent = $ofCurrent.value;
     }

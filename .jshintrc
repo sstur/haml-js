@@ -11,6 +11,7 @@
   "eqnull": true,
   "es5": true,
   "expr": true,
+  "globalstrict": true,
   "laxbreak": true,
   "proto": true,
   "sub": true,

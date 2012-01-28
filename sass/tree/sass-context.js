@@ -1,5 +1,8 @@
-var Sass = require('../sass');
+"use strict";
+var util = require('../../lib/util');
 var Class = require('../../lib/class');
+
+var Sass = require('../sass');
 
 /**
  * @class SassContext
@@ -102,7 +105,7 @@ var SassContext = module.exports = Class.extend({
    * contexts they will be set to that defined in this context.
    */
   merge: function() {
-    this.parent.variables = array_merge(this.parent.variables, this.variables);
-    this.parent.mixins = array_merge(this.parent.mixins, this.mixins);
+    this.parent.variables = util.array_merge(this.parent.variables, this.variables);
+    this.parent.mixins = util.array_merge(this.parent.mixins, this.mixins);
   }
 });

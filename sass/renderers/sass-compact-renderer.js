@@ -1,4 +1,8 @@
-var SassCompressedRenderer = require('sass-compressed-renderer');
+"use strict";
+var util = require('../../lib/util');
+
+var SassRuleNode = require('../tree/sass-rule-node');
+var SassCompressedRenderer = require('./sass-compressed-renderer');
 
 /**
  * $class SassCompactRenderer
@@ -45,7 +49,7 @@ var SassCompactRenderer = module.exports = SassCompressedRenderer.extend({
    * @returns {string} the rendered directive
    */
   renderDirective: function(node, properties) {
-    return str_replace('\n', '', this._super(node, properties)) + '\n\n';
+    return util.replace(this._super(node, properties), '\n', '') + '\n\n';
   },
 
   /**

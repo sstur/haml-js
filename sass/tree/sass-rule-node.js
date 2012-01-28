@@ -1,3 +1,9 @@
+"use strict";
+var util = require('../../lib/util');
+
+var Sass = require('../sass');
+var SassNode = require('./sass-node');
+
 /**
  * @class SassRuleNode
  * Represents a CSS rule.
@@ -107,11 +113,11 @@ var SassRuleNode = module.exports = SassNode.extend({
       var extenders = this.root.extenders[extendee];
       if (this.isPsuedo(extendee)) {
         extendee = extendee.split(':');
-        pattern = preg_quote(extendee[0]) + '((\\.[-\\w]+)*):' + preg_quote(extendee[1]);
+        pattern = util.preg_quote(extendee[0]) + '((\\.[-\\w]+)*):' + util.preg_quote(extendee[1]);
       } else {
-        pattern = preg_quote(extendee);
+        pattern = util.preg_quote(extendee);
       }
-      preg_grep('/' + pattern + '$/', this.selectors).forEach(function(selector) {
+      util.preg_grep(pattern + '$', this.selectors).forEach(function(selector) {
         extenders.forEach(function(extender) {
           if (Array.isArray(extendee)) {
             this.selectors.push(selector.replace(new RegExp('(.*?)' + pattern + '$', 'g'), '$1' + extender + '$2'));
@@ -119,7 +125,7 @@ var SassRuleNode = module.exports = SassNode.extend({
           if (this.isSequence(extender) || this.isSequence(selector)) {
             this.selectors = this.selectors.concat(this.mergeSequence(extender, selector));
           } else {
-            this.selectors.push(str_replace(extendee, extender, selector));
+            this.selectors.push(util.replace(selector, extendee, extender));
           }
         }, this);
       }, this);
@@ -132,7 +138,7 @@ var SassRuleNode = module.exports = SassNode.extend({
    * @return {boolean} true if the selector is a psuedo selector, false if not
    */
   isPsuedo: function(selector) {
-    return strpos(selector, ':') !== false;
+    return selector.indexOf(':') >= 0;
   },
 
   /**
@@ -193,7 +199,7 @@ var SassRuleNode = module.exports = SassNode.extend({
       selector = this.interpolate(selector, context);
       //selector = this.evaluate(this.interpolate(selector, context), context).toString();
       if (this.hasParentReference(selector)) {
-        resolvedSelectors = array_merge(resolvedSelectors, this.resolveParentReferences(selector, context));
+        resolvedSelectors = util.array_merge(resolvedSelectors, this.resolveParentReferences(selector, context));
       } else
       if (this.parentSelectors) {
         this.parentSelectors.forEach(function(parentSelector) {
@@ -271,7 +277,7 @@ var SassRuleNode = module.exports = SassNode.extend({
       throw new Sass.RuleNodeException('Can not use parent selector (' + this.PARENT_REFERENCE + ') when no parent selectors', {}, this);
     }
     this.getParentSelectors(context).forEach(function($parentSelector) {
-      resolvedReferences.push(str_replace(this.PARENT_REFERENCE, $parentSelector, selector));
+      resolvedReferences.push(util.replace(selector, this.PARENT_REFERENCE, $parentSelector));
     }, this);
     return resolvedReferences;
   },

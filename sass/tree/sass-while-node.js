@@ -1,3 +1,6 @@
+"use strict";
+var SassNode = require('./sass-node');
+
 /**
  * @class SassWhileNode
  * Represents a Sass @while loop and a Sass @do loop.

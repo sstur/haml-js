@@ -1,3 +1,4 @@
+"use strict";
 var SassRenderer = require('sass-renderer');
 
 /**

@@ -1,22 +1,13 @@
-//require('sass-context');
-//require('sass-comment-node');
-//require('sass-debug-node');
-//require('sass-directive-node');
-//require('sass-import-node');
-//require('sass-mixin-node');
-//require('sass-mixin-definition-node');
-//require('sass-property-node');
-//require('sass-root-node');
-//require('sass-rule-node');
-//require('sass-variable-node');
-//require('sass-extend-node');
-//require('sass-for-node');
-//require('sass-if-node');
-//require('sass-else-node');
-//require('sass-while-node');
-
+"use strict";
 var Class = require('class');
 var Sass = require('../sass');
+
+var SassDebugNode = require('sass-debug-node');
+var SassDirectiveNode = require('sass-directive-node');
+var SassForNode = require('sass-for-node');
+var SassIfNode = require('sass-if-node');
+var SassElseNode = require('sass-else-node');
+var SassWhileNode = require('sass-while-node');
 
 /**
  * @class SassNode
@@ -49,21 +40,13 @@ var SassNode = module.exports = Class.extend({
     this.token = token;
   },
 
-  clone: function() {
-    //TODO: clone node
-  },
-
   /**
    * Getter.
    * @param string name of property to get
    * @returns mixed return value of getter function
    */
   __get: function(name) {
-    var getter = 'get' + ucfirst(name);
-    if (this.hasOwnProperty(getter)) {
-      return this[getter]();
-    }
-    throw new Sass.NodeException('No getter function for {what}', {'what': name}, this);
+    throw new Error('Wildcard getter not implemented.');
   },
 
   /**
@@ -73,21 +56,19 @@ var SassNode = module.exports = Class.extend({
    * @returns {SassNode} this node
    */
   __set: function(name, value) {
-    var setter = 'set' + ucfirst(name);
-    if (this.hasOwnProperty(setter)) {
-      this[setter](value);
-      return this;
-    }
-    throw new Sass.NodeException('No setter function for {what}', {'what': name}, this);
+    throw new Error('Wildcard setter not implemented.');
   },
 
   /**
    * Resets children when cloned
    * @see parse
    */
-  //__clone: function() {
-  //  this.children = [];
-  //},
+  clone: function() {
+    //TODO: clone node
+    throw new Error('Clone not implemented.');
+    //var newNode = {};
+    //newNode.children = [];
+  },
 
   /**
    * Return a value indicating if this node has a parent

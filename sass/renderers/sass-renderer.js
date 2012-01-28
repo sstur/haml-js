@@ -1,3 +1,4 @@
+"use strict";
 var SassCompactRenderer = require('sass-compact-renderer');
 var SassCompressedRenderer = require('sass-compressed-renderer');
 var SassExpandedRenderer = require('sass-expanded-renderer');

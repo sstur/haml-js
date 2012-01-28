@@ -1,3 +1,4 @@
+"use strict";
 var SassIfNode = require('./sass-if-node');
 
 /**

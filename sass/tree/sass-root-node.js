@@ -1,3 +1,6 @@
+"use strict";
+var util = require('../../lib/util');
+
 var Sass = require('../sass');
 var SassNode = require('./sass-node');
 var SassContext = require('./sass-context');
@@ -34,6 +37,9 @@ var SassRootNode = module.exports = SassNode.extend({
    * @return {SassNode}
    */
   init: function(parser) {
+    if (typeof parser == 'string') {
+      throw new Error('SASS Node de-serializer not implemented.')
+    }
     this._super({
       'source': '',
       'level': -1,
@@ -73,7 +79,7 @@ var SassRootNode = module.exports = SassNode.extend({
   },
 
   extend: function(extendee, selectors) {
-    this.extenders[extendee] = (this.extenders[extendee]) ? array_merge(this.extenders[extendee], selectors) : selectors;
+    this.extenders[extendee] = (this.extenders[extendee]) ? util.array_merge(this.extenders[extendee], selectors) : selectors;
   },
 
   getExtenders: function() {
@@ -86,6 +92,6 @@ var SassRootNode = module.exports = SassNode.extend({
    * @throws {SassNodeException} if not overriden
    */
   isa: function(line) {
-    throw new SassNodeException('Child classes must override this method');
+    throw new Sass.NodeException('Child classes must override this method');
   }
 });

@@ -1,10 +1,10 @@
-/*global merge, file_exists, dirname, basename, realpath, is_dir, mkdir, scandir, filemtime, md5, serialize,
-  unserialize, file_get_contents, file_put_contents */
-
+"use strict";
+var util = require('../lib/util');
 var Class = require('../lib/class');
 
 var Sass = require('./sass');
 var SassParser = require('./sass-parser');
+var SassRootNode = require('./tree/sass-root-node');
 
 /**
  * @class SassFile
@@ -34,7 +34,7 @@ var SassFile = module.exports = Class.extend({
       }
     }
 
-    var sassParser = new SassParser(merge({}, parser.options, {line: 1}));
+    var sassParser = new SassParser(util.merge({}, parser.options, {line: 1}));
     var tree = sassParser.parse(filename);
     if (parser.cache) {
       this.setCachedFile(tree, filename, parser.cache_location);
@@ -68,21 +68,21 @@ var SassFile = module.exports = Class.extend({
         _filename = filename;
       }
 
-      if (file_exists(_filename)) {
+      if (util.file_exists(_filename)) {
         return _filename;
       }
 
-      var arr = [dirname(parser.filename)].concat(parser.load_paths);
+      var arr = [util.dirname(parser.filename)].concat(parser.load_paths);
       for (i = 0; i < arr.length; i++) {
         var loadPath = arr[i];
-        path = this.findFile(_filename, realpath(loadPath));
+        path = this.findFile(_filename, util.realpath(loadPath));
         if (path !== false) {
           return path;
         }
       }
 
       if (parser.template_location != null) {
-        path = this.findFile(_filename, realpath(parser.template_location));
+        path = this.findFile(_filename, util.realpath(parser.template_location));
         if (path !== false) {
           return path;
         }
@@ -100,21 +100,21 @@ var SassFile = module.exports = Class.extend({
    * @returns full path to file or `false` if not found
    */
   findFile: function(filename, dir) {
-    var partialname = dirname(filename) + '/_' + basename(filename);
+    var partialname = util.dirname(filename) + '/_' + util.basename(filename);
     var file;
 
     var arr = [filename, partialname];
     for (var i = 0; i < arr.length; i++) {
       file = arr[i];
-      if (file_exists(dir + '/' + file)) {
-        return realpath(dir + '/' + file);
+      if (util.file_exists(dir + '/' + file)) {
+        return util.realpath(dir + '/' + file);
       }
     }
 
-    var files = scandir(dir).slice(2);
+    var files = util.scandir(dir).slice(2);
     for (i = 0; i < files.length; i++) {
       file = files[i];
-      if (is_dir(dir + '/' + file)) {
+      if (util.is_dir(dir + '/' + file)) {
         var path = this.findFile(filename, dir + '/' + file);
         if (path !== false) {
           return path;
@@ -131,10 +131,10 @@ var SassFile = module.exports = Class.extend({
    * @returns the cached file if available or false if not
    */
   getCachedFile: function(filename, cacheLocation) {
-    var cached = realpath(cacheLocation) + '/' + md5(filename) + '.' + this.SASSC;
+    var cached = util.realpath(cacheLocation) + '/' + util.md5(filename) + '.' + this.SASSC;
 
-    if (cached && file_exists(cached) && filemtime(cached) >= filemtime(filename)) {
-      return unserialize(file_get_contents(cached));
+    if (cached && util.file_exists(cached) /* TODO: && filemtime(cached) >= filemtime(filename) */ ) {
+      return new SassRootNode(util.file_get_contents(cached));
     }
     return false;
   },
@@ -147,15 +147,8 @@ var SassFile = module.exports = Class.extend({
    * @returns the cached file if available or false if not
    */
   setCachedFile: function(sassc, filename, cacheLocation) {
-    var cacheDir = realpath(cacheLocation);
-
-    if (!cacheDir) {
-      mkdir(cacheLocation);
-      cacheDir = realpath(cacheLocation);
-    }
-
-    var cached = cacheDir + '/' + md5(filename) + '.' + this.SASSC;
-
-    return file_put_contents(cached, serialize(sassc));
+    var cacheDir = util.realpath(cacheLocation);
+    var cached = cacheDir + '/' + util.md5(filename) + '.' + this.SASSC;
+    return util.file_put_contents(cached, sassc.serialize());
   }
 });

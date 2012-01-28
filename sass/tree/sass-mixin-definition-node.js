@@ -1,3 +1,4 @@
+"use strict";
 var Sass = require('../sass');
 var SassNode = require('./sass-node');
 

@@ -1,5 +1,5 @@
+"use strict";
 var App = require('../core');
-
 var Sass = Object.create(App);
 
 Sass.Exception = App.Exception.extend({
@@ -28,3 +28,8 @@ Sass.PropertyNodeException = Sass.NodeException.extend({});
 Sass.RuleNodeException = Sass.NodeException.extend({});
 Sass.VariableNodeException = Sass.NodeException.extend({});
 Sass.WhileNodeException = Sass.NodeException.extend({});
+
+Sass.ScriptParserException = Sass.Exception.extend({});
+Sass.ScriptLexerException = Sass.ScriptParserException.extend({});
+Sass.ScriptOperationException = Sass.ScriptParserException.extend({});
+Sass.ScriptFunctionException = Sass.ScriptParserException.extend({});

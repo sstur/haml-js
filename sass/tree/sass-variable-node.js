@@ -1,4 +1,6 @@
+"use strict";
 var Sass = require('../sass');
+var SassNode = require('./sass-node');
 
 /**
  * @class SassVariableNode
@@ -49,8 +51,8 @@ var SassVariableNode = module.exports = SassNode.extend({
     if (matches[this.IDENTIFIER] === this.SASS_IDENTIFIER) {
       this.addWarning('Variables prefixed with "!" is deprecated; use "${name}"', {'{name}': this.name});
     }
-    if (matches[SassVariableNode::SASS_ASSIGNMENT]) {
-      this.addWarning('Setting variables with "{sassDefault}=" is deprecated; use "${name}: {value}{scssDefault}"', {'{sassDefault}': (matches[SassVariableNode::SASS_DEFAULT]) ? '||' : '', '{name}': this.name, '{value}': this.value, '{scssDefault}': (matches[SassVariableNode::SASS_DEFAULT]) ? ' !default' : ''});
+    if (matches[SassVariableNode.SASS_ASSIGNMENT]) {
+      this.addWarning('Setting variables with "{sassDefault}=" is deprecated; use "${name}: {value}{scssDefault}"', {'{sassDefault}': (matches[SassVariableNode.SASS_DEFAULT]) ? '||' : '', '{name}': this.name, '{value}': this.value, '{scssDefault}': (matches[SassVariableNode.SASS_DEFAULT]) ? ' !default' : ''});
     }
   },
 

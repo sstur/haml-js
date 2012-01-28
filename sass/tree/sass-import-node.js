@@ -1,3 +1,6 @@
+"use strict";
+var util = require('../../lib/util');
+
 var Sass = require('../sass');
 var SassNode = require('./sass-node');
 
@@ -42,12 +45,12 @@ var SassImportNode = module.exports = SassNode.extend({
       if (file.match(this.MATCH_CSS)) {
         return "@import ${file}";
       } else {
-        file = trim(file, '\'"');
+        file = util.trim(file, '\'"');
         var tree = this.getTree(this.getFile(file, this.parser), this.parser);
         if (!tree) {
           throw new Sass.ImportNodeException('Unable to create document tree for {file}', {'{file}': file}, this);
         } else {
-          array_merge(imported, tree.parse(context).children);
+          util.array_merge(imported, tree.parse(context).children);
         }
       }
     }, this);

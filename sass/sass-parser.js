@@ -1,20 +1,5 @@
-/*global merge, substr, file_get_contents, explode, ltrim, rtrim */
-
-/**
- * @class SassParser
- * See the [Sass documentation](http://sass-lang.com/docs)
- * for details of Sass.
- *
- * Credits:
- * This is a port of Sass from [PHP](http://code.google.com/p/phamlp) which was originally ported from Ruby.
- * All the genius comes from the people that develop these other projects, in particular:
- * + [Chris Yates](mailto:chris.l.yates@gmail.com),
- * + [Hampton Catlin](http://hamptoncatlin.com/),
- * + [Nathan Weizenbaum](http://nex-3.com/),
- * + [Chris Eppstein](http://chriseppstein.github.com/)
- *
- */
-
+"use strict";
+var util = require('../lib/util');
 var Class = require('../lib/class');
 
 var Sass = require('./sass');
@@ -315,7 +300,7 @@ var SassParser = module.exports = Class.extend({
       'syntax': SassFile.SASS
     };
 
-    var obj = merge({}, defaultOptions, opts);
+    var obj = util.merge({}, defaultOptions, opts);
     for (var name in obj) {
       var value = obj[name];
       if (typeof this[name] != 'undefined') {
@@ -424,7 +409,7 @@ var SassParser = module.exports = Class.extend({
       this.filename = SassFile.getFile(source, this);
 
       if (isFile) {
-        this.syntax = substr(this.filename, -4);
+        this.syntax = this.filename.substr(-4);
       } else
       if (this.syntax !== SassFile.SASS && this.syntax !== SassFile.SCSS) {
         throw new Sass.Exception('Invalid {what}', {'what': 'syntax option'});
@@ -437,7 +422,7 @@ var SassParser = module.exports = Class.extend({
         }
       }
 
-      var tree = this.toTree(file_get_contents(this.filename));
+      var tree = this.toTree(util.file_get_contents(this.filename));
 
       if (this.cache) {
         SassFile.setCachedFile(tree, this.filename, this.cache_location);
@@ -464,7 +449,7 @@ var SassParser = module.exports = Class.extend({
    */
   toTree: function(source) {
     if (this.syntax === SassFile.SASS) {
-      this.source = explode('\n', source);
+      this.source = source.split('\n');
       this.setIndentChar();
     } else {
       this.source = source;
@@ -564,7 +549,7 @@ var SassParser = module.exports = Class.extend({
       // Comment statements can span multiple lines
       if (statement[0] === self.BEGIN_COMMENT) {
         // Consume Sass comments
-        if (substr(statement, 0, self.BEGIN_SASS_COMMENT.length) === self.BEGIN_SASS_COMMENT) {
+        if (statement.substr(0, self.BEGIN_SASS_COMMENT.length) === self.BEGIN_SASS_COMMENT) {
           statement = void 0;
           while(this.getLevel(this.source[0]) > level) {
             this.source.shift();
@@ -573,9 +558,9 @@ var SassParser = module.exports = Class.extend({
           continue;
         } else
         // Build CSS comments
-        if (substr(statement, 0, self.BEGIN_CSS_COMMENT.length)  === self.BEGIN_CSS_COMMENT) {
+        if (statement.substr(0, self.BEGIN_CSS_COMMENT.length)  === self.BEGIN_CSS_COMMENT) {
           while(this.getLevel(this.source[0]) > level) {
-            statement += '\n' + ltrim(this.source.shift());
+            statement += '\n' + util.ltrim(this.source.shift());
             this.line++;
           }
         } else {
@@ -584,10 +569,10 @@ var SassParser = module.exports = Class.extend({
         }
       } else
       // Selector statements can span multiple lines
-      if (substr(statement, -1) === SassRuleNode.CONTINUED) {
+      if (statement.substr(-1) === SassRuleNode.CONTINUED) {
         // Build the selector statement
         while(this.getLevel(this.source[0]) === level) {
-          statement += ltrim(this.source.shift());
+          statement += util.ltrim(this.source.shift());
           this.line++;
         }
       }
@@ -609,9 +594,9 @@ var SassParser = module.exports = Class.extend({
    * @returns {number} the level of the source
    */
   getLevel: function(source) {
-    var indent = source.length - ltrim(source).length;
+    var indent = source.length - util.ltrim(source).length;
     var level = indent / this.indentSpaces;
-    if (typeof level == 'number' || substr(source, 0, indent).indexOf(this.indentChar) === 0) {
+    if (typeof level == 'number' || source.substr(0, indent).indexOf(this.indentChar) === 0) {
       this.source = source;
       throw new Sass.Exception('Invalid indentation', {}, this);
     }
@@ -637,12 +622,12 @@ var SassParser = module.exports = Class.extend({
       var c = this.source[srcpos++];
       switch (c) {
         case self.BEGIN_COMMENT:
-          if (substr(this.source, srcpos-1, self.BEGIN_SASS_COMMENT.length) === self.BEGIN_SASS_COMMENT) {
+          if (this.source.substr(srcpos-1, self.BEGIN_SASS_COMMENT.length) === self.BEGIN_SASS_COMMENT) {
             while (this.source[srcpos++] !== "\n") void 0;
             statement += "\n";
           } else
-          if (substr(this.source, srcpos-1, self.BEGIN_CSS_COMMENT.length) === self.BEGIN_CSS_COMMENT) {
-            if (ltrim(statement)) {
+          if (this.source.substr(srcpos-1, self.BEGIN_CSS_COMMENT.length) === self.BEGIN_CSS_COMMENT) {
+            if (util.ltrim(statement)) {
               throw new Sass.Exception('Invalid {what}', {'what': 'comment'}, {
                 'source': statement,
                 'filename': this.filename,
@@ -650,7 +635,7 @@ var SassParser = module.exports = Class.extend({
               });
             }
             statement += c + this.source[srcpos++];
-            while (substr(this.source, srcpos, self.END_CSS_COMMENT.length) !== self.END_CSS_COMMENT) {
+            while (this.source.substr(srcpos, self.END_CSS_COMMENT.length) !== self.END_CSS_COMMENT) {
               statement += this.source[srcpos++];
             }
             srcpos += self.END_CSS_COMMENT.length;
@@ -669,7 +654,7 @@ var SassParser = module.exports = Class.extend({
           break;
         case self.BEGIN_INTERPOLATION:
           statement += c;
-          if (substr(this.source, srcpos-1, self.BEGIN_INTERPOLATION_BLOCK.length) === self.BEGIN_INTERPOLATION_BLOCK) {
+          if (this.source.substr(srcpos-1, self.BEGIN_INTERPOLATION_BLOCK.length) === self.BEGIN_INTERPOLATION_BLOCK) {
             while (this.source[srcpos] !== self.END_BLOCK) {
               statement += this.source[srcpos++];
             }
@@ -707,13 +692,13 @@ var SassParser = module.exports = Class.extend({
 
     this.line += statement.split('\n').length - 1;
     statement = statement.trim();
-    if (substr(statement, 0, self.BEGIN_CSS_COMMENT.length) !== self.BEGIN_CSS_COMMENT) {
+    if (statement.substr(0, self.BEGIN_CSS_COMMENT.length) !== self.BEGIN_CSS_COMMENT) {
       statement = statement.replace(/[\r\n]/g, '');
     }
-    var last = substr(statement, -1);
+    var last = statement.substr(-1);
     // Trim the statement removing whitespace, end statement (;), begin block ({), and (unless the statement ends in an interpolation block) end block (})
-    statement = rtrim(statement, ' '.self.BEGIN_BLOCK.self.END_STATEMENT);
-    statement = (statement.match(/#\{.+?\}$/i) ? statement : rtrim(statement, self.END_BLOCK));
+    statement = util.rtrim(statement, ' '.self.BEGIN_BLOCK.self.END_STATEMENT);
+    statement = (statement.match(/#\{.+?\}$/i) ? statement : util.rtrim(statement, self.END_BLOCK));
     var token = (statement ? {
       'source': statement,
       'level': level,

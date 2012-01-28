@@ -1,5 +1,9 @@
+"use strict";
+var util = require('../../lib/util');
+
 var Sass = require('../sass');
 var SassNode = require('./sass-node');
+var SassContext = require('./sass-context');
 var SassScriptFunction = require('../script/sass-script-function');
 
 /**
@@ -66,7 +70,7 @@ var SassMixinNode = module.exports = SassNode.extend({
     var children = [];
     mixin.children.forEach(function(child) {
       child.parent = this;
-      children = array_merge(children, child.parse(context));
+      children = util.array_merge(children, child.parse(context));
     }, this);
 
     context.merge();

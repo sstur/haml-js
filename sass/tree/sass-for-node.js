@@ -1,6 +1,10 @@
+"use strict";
+var util = require('../../lib/util');
+
 var Sass = require('../sass');
 var SassNode = require('./sass-node');
 var SassNumber = require('../script/literals/sass-number');
+var SassContext = require('./sass-context');
 
 /**
  * @class SassForNode
@@ -74,7 +78,7 @@ var SassForNode = module.exports = SassNode.extend({
     context = new SassContext(context);
     for (var i = from; (from < to ? i < to : i > to); i = i + step) {
       context.setVariable(this.variable, new SassNumber(i));
-      array_merge(children, this.parseChildren(context));
+      util.array_merge(children, this.parseChildren(context));
     }
     return children;
   }

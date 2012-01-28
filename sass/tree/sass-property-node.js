@@ -1,3 +1,6 @@
+"use strict";
+var util = require('../../lib/util');
+
 var Sass = require('../sass');
 var SassNode = require('./sass-node');
 var SassScriptParser = require('../script/sass-script-parser');
@@ -99,7 +102,7 @@ var SassPropertyNode = SassNode.extend({
       ret.push(node);
     }
     if (this.children) {
-      ret = array_merge(ret, this.parseChildren(context));
+      ret = util.array_merge(ret, this.parseChildren(context));
     }
     return ret;
   },

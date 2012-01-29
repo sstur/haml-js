@@ -13,6 +13,11 @@ var SassBoolean = module.exports = SassLiteral.extend({
   MATCH: /^(true|false)\b/,
 
   /**
+   * @var {string} the literal type (class)
+   */
+  type: 'SassBoolean',
+
+  /**
    * SassBoolean constructor
    * @param {string} value - value of the boolean type
    * @return {SassBoolean}

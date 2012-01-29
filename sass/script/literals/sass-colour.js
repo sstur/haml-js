@@ -39,6 +39,11 @@ var SassColour = SassLiteral.extend({
   TRANSPARENT: 'transparent',
   /**@#-*/
 
+  /**
+   * @var {string} the literal type (class)
+   */
+  type: 'SassColour',
+
   /**@#-*/
   svgColours: {
     'aliceblue'              : '#f0f8ff',

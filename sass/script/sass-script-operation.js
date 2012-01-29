@@ -137,7 +137,7 @@ var SassScriptOperation = Class.extend({
    * @return mixed match at the start of the string or false if no match
    */
   isa: function(subject) {
-    var $matches = subject.match(this.MATCH);
-    return ($matches ? $matches[0].trim() : false);
+    var matches = subject.match(this.MATCH);
+    return (matches ? matches[0].trim() : false);
   }
 });

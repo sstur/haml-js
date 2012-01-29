@@ -1,3 +1,4 @@
+//TODO: variables and documentation
 "use strict";
 var util = require('../../lib/util');
 var Class = require('../../lib/class');

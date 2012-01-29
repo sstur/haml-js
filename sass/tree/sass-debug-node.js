@@ -16,7 +16,7 @@ var SassDebugNode = module.exports = SassNode.extend({
    */
   $message: null,
   /**
-   * @var {array} parameters for the message;
+   * @var {Array} parameters for the message;
    * only used by internal warning messages
    */
   $params: null,
@@ -27,12 +27,12 @@ var SassDebugNode = module.exports = SassNode.extend({
 
   /**
    * SassDebugNode.
-   * @param {object} token - source token
+   * @param {Object} token - source token
    * @param {mixed} string: an internally generated warning message about the source
    *                boolean: the source token is a @debug or @warn directive containing the message; True if
    *                this is a @warn directive
    * @param {Object} params - parameters for the message
-   * @return {SassDebugNode}
+   * @returns {SassDebugNode}
    */
   init: function(token, message, params) {
     this._super(token);
@@ -50,7 +50,7 @@ var SassDebugNode = module.exports = SassNode.extend({
   /**
    * Parse this node.
    * This raises an error.
-   * @return {array} An empty array
+   * @returns {Array} An empty array
    */
   parse: function() {
     if (!this.warning || (this.root.parser.quiet === false)) {

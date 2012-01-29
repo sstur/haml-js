@@ -73,7 +73,7 @@ var SassScriptOperation = Class.extend({
    * SassScriptOperation constructor
    *
    * @param {string|Array} string: operator symbol; array: operator token
-   * @return SassScriptOperation
+   * @returns SassScriptOperation
    */
   init: function(operation) {
     if (typeof operation == 'string') {
@@ -90,7 +90,7 @@ var SassScriptOperation = Class.extend({
   /**
    * Getter function for properties
    * @param string name of property
-   * @return mixed value of the property
+   * @returns mixed value of the property
    * @throws SassScriptOperationException if the property does not exist
    */
   __get: function(name) {
@@ -104,7 +104,7 @@ var SassScriptOperation = Class.extend({
   /**
    * Performs this operation.
    * @param array operands for the operation. The operands are SassLiterals
-   * @return SassLiteral the result of the operation
+   * @returns SassLiteral the result of the operation
    * @throws SassScriptOperationException if the oprand count is incorrect or
    * the operation is undefined
    */
@@ -134,7 +134,7 @@ var SassScriptOperation = Class.extend({
    * Returns a value indicating if a token of this type can be matched at
    * the start of the subject string.
    * @param string the subject string
-   * @return mixed match at the start of the string or false if no match
+   * @returns mixed match at the start of the string or false if no match
    */
   isa: function(subject) {
     var matches = subject.match(this.MATCH);

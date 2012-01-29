@@ -17,8 +17,8 @@ var SassExtendNode = module.exports = SassNode.extend({
 
   /**
    * SassExtendNode.
-   * @param {object} token - source token
-   * @return {SassExtendNode}
+   * @param {Object} token - source token
+   * @returns {SassExtendNode}
    */
   init: function(token) {
     this._super(token);
@@ -28,7 +28,7 @@ var SassExtendNode = module.exports = SassNode.extend({
 
   /**
    * Parse this node.
-   * @return array An empty array
+   * @returns array An empty array
    */
   parse: function(context) {
     this.root.extend(this.value, this.parent.selectors);

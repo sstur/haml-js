@@ -34,7 +34,7 @@ var SassRootNode = module.exports = SassNode.extend({
   /**
    * Root SassNode constructor.
    * @param {SassParser} parser - Sass parser
-   * @return {SassNode}
+   * @returns {SassNode}
    */
   init: function(parser) {
     if (typeof parser == 'string') {
@@ -57,7 +57,7 @@ var SassRootNode = module.exports = SassNode.extend({
    * Dynamic nodes are evaluated, files imported, etc.
    * Only static nodes for rendering are in the resulting tree.
    * @param {SassContext} context - the context in which this node is parsed
-   * @return {SassNode} root node of the render tree
+   * @returns {SassNode} root node of the render tree
    */
   parse: function(context) {
     var $node = this.clone();
@@ -67,7 +67,7 @@ var SassRootNode = module.exports = SassNode.extend({
 
   /**
    * Render this node.
-   * @return {string} the rendered node
+   * @returns {string} the rendered node
    */
   render: function() {
     var node = this.parse(new SassContext());

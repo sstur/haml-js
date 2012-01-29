@@ -15,7 +15,7 @@ var SassCommentNode = module.exports = SassNode.extend({
   /**
    * SassCommentNode constructor.
    * @param {Object} token - source token
-   * @return CommentNode
+   * @returns CommentNode
    */
   init: function(token) {
     this._super(token);
@@ -29,7 +29,7 @@ var SassCommentNode = module.exports = SassNode.extend({
 
   /**
    * Parse this node.
-   * @return {Array} the parsed node - an empty array
+   * @returns {Array} the parsed node - an empty array
    */
   parse: function(context) {
     return [this];
@@ -37,7 +37,7 @@ var SassCommentNode = module.exports = SassNode.extend({
 
   /**
    * Render this node.
-   * @return {string} the rendered node
+   * @returns {string} the rendered node
    */
   render: function() {
     return this.renderer.renderComment(this);
@@ -45,8 +45,8 @@ var SassCommentNode = module.exports = SassNode.extend({
 
   /**
    * Returns a value indicating if the token represents this type of node.
-   * @param {object} token
-   * @return {boolean} true if the token represents this type of node, false if not
+   * @param {Object} token
+   * @returns {boolean} true if the token represents this type of node, false if not
    */
   isa: function(token) {
     return token.source.charAt(0) === this.NODE_IDENTIFIER;

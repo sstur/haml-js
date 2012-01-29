@@ -22,8 +22,8 @@ var SassWhileNode = module.exports = SassNode.extend({
 
   /**
    * SassWhileNode constructor.
-   * @param {object} token - source token
-   * @return {SassWhileNode}
+   * @param {Object} token - source token
+   * @returns {SassWhileNode}
    */
   init: function(token) {
     this._super(token);
@@ -35,7 +35,7 @@ var SassWhileNode = module.exports = SassNode.extend({
   /**
    * Parse this node.
    * @param {SassContext} context - the context in which this node is parsed
-   * @return {array} the parsed child nodes
+   * @returns {Array} the parsed child nodes
    */
   parse: function(context) {
     var children = [];

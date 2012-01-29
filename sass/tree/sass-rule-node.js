@@ -40,8 +40,8 @@ var SassRuleNode = module.exports = SassNode.extend({
 
   /**
    * SassRuleNode constructor.
-   * @param {object} token - source token
-   * @return {SassRuleNode}
+   * @param {Object} token - source token
+   * @returns {SassRuleNode}
    */
   init: function(token) {
     this._super(token);
@@ -61,7 +61,7 @@ var SassRuleNode = module.exports = SassNode.extend({
 
   /**
    * Returns a value indicating if the selectors for this rule are to be continued.
-   * @return {boolean} true if the selectors for this rule are to be continued,
+   * @returns {boolean} true if the selectors for this rule are to be continued,
    * false if not
    */
   getIsContinued: function() {
@@ -71,7 +71,7 @@ var SassRuleNode = module.exports = SassNode.extend({
   /**
    * Parse this node and its children into static nodes.
    * @param {SassContext} context - the context in which this node is parsed
-   * @return {array} the parsed node and its children
+   * @returns {Array} the parsed node and its children
    */
   parse: function(context) {
     var node = this.clone();
@@ -82,7 +82,7 @@ var SassRuleNode = module.exports = SassNode.extend({
 
   /**
    * Render this node and its children to CSS.
-   * @return {string} the rendered node
+   * @returns {string} the rendered node
    */
   render: function() {
     this.extend();
@@ -135,7 +135,7 @@ var SassRuleNode = module.exports = SassNode.extend({
   /**
    * Tests whether the selector is a psuedo selector
    * @param {string} selector - selector to test
-   * @return {boolean} true if the selector is a psuedo selector, false if not
+   * @returns {boolean} true if the selector is a psuedo selector, false if not
    */
   isPsuedo: function(selector) {
     return selector.indexOf(':') >= 0;
@@ -144,7 +144,7 @@ var SassRuleNode = module.exports = SassNode.extend({
   /**
    * Tests whether the selector is a sequence selector
    * @param {string} selector - selector to test
-   * @return {boolean} true if the selector is a sequence selector, false if not
+   * @returns {boolean} true if the selector is a sequence selector, false if not
    */
   isSequence: function(selector) {
     return selector.indexOf(' ') >= 0;
@@ -154,7 +154,7 @@ var SassRuleNode = module.exports = SassNode.extend({
    * Merges selector sequences
    * @param {string} extender - the extender selector
    * @param {string} selector - selector to extend
-   * @return {array} the merged sequences
+   * @returns {Array} the merged sequences
    */
   mergeSequence: function(extender, selector) {
     extender = extender.split(' ');
@@ -178,7 +178,7 @@ var SassRuleNode = module.exports = SassNode.extend({
 
   /**
    * Returns the selectors
-   * @return {array} selectors
+   * @returns {Array} selectors
    */
   getSelectors: function() {
     return this.selectors;
@@ -216,7 +216,7 @@ var SassRuleNode = module.exports = SassNode.extend({
   /**
    * Returns the parent selector(s) for this node.
    * This in an empty array if there is no parent selector.
-   * @return {array} the parent selector for this node
+   * @returns {Array} the parent selector for this node
    */
   getParentSelectors: function(context) {
     var $ancestor = this.parent;
@@ -237,7 +237,7 @@ var SassRuleNode = module.exports = SassNode.extend({
    * Note that the return value may be non-Boolean that evaluates to FALSE,
    * i.e. 0. The return value should be tested using the === operator.
    * @param {string} selector - selector to test
-   * @return {mixed} integer: position of the the first parent reference,
+   * @returns {mixed} integer: position of the the first parent reference,
    * boolean: false if there is no parent reference.
    */
   parentReferencePos: function(selector) {
@@ -260,7 +260,7 @@ var SassRuleNode = module.exports = SassNode.extend({
   /**
    * Determines if there is a parent reference in the selector
    * @param {string} selector
-   * @return {boolean} true if there is a parent reference in the selector
+   * @returns {boolean} true if there is a parent reference in the selector
    */
   hasParentReference: function(selector) {
     return this.parentReferencePos(selector) !== false;
@@ -269,7 +269,7 @@ var SassRuleNode = module.exports = SassNode.extend({
   /**
    * Resolves parent references in the selector
    * @param {string} selector - selector
-   * @return {string} selector with parent references resolved
+   * @returns {string} selector with parent references resolved
    */
   resolveParentReferences: function(selector, context) {
     var resolvedReferences = [];
@@ -287,7 +287,7 @@ var SassRuleNode = module.exports = SassNode.extend({
    * We can't use PHP explode as this will potentially explode attribute
    * matches in the selector, e.g. div[title="some,value"] and interpolations.
    * @param {string} string - selectors
-   * @return {array} selectors
+   * @returns {Array} selectors
    */
   explode: function(string) {
     var selectors = [];

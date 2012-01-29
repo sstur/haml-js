@@ -507,7 +507,7 @@ var SassParser = module.exports = Class.extend({
   /**
    * Returns a token object that contains the next source statement and
    * meta data about it.
-   * @returns {object}
+   * @returns {Object}
    */
   getToken: function() {
     return (this.syntax === SassFile.SASS ? this.sass2Token() : this.scss2Token());
@@ -518,7 +518,7 @@ var SassParser = module.exports = Class.extend({
    * about it from SASS source.
    * Sass statements are passed over. Statements spanning multiple lines, e.g.
    * CSS comments and selectors, are assembled into a single statement.
-   * @returns {object} Statement token. Null if end of source.
+   * @returns {Object} Statement token. Null if end of source.
    */
   sass2Token: function() {
     var self = this.constructor.prototype;
@@ -598,7 +598,7 @@ var SassParser = module.exports = Class.extend({
   /**
    * Returns an object that contains the next source statement and meta data
    * about it from SCSS source.
-   * @returns {object} Statement token. Null if end of source.
+   * @returns {Object} Statement token. Null if end of source.
    */
   scss2Token: function() {
     var self = this.constructor.prototype;

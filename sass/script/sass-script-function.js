@@ -25,8 +25,8 @@ var SassScriptFunction = Class.extend({
   /**
    * SassScriptFunction constructor
    * @param {string} name - name of the function
-   * @param {array} args - arguments for the function
-   * @return {SassScriptFunction}
+   * @param {Array} args - arguments for the function
+   * @returns {SassScriptFunction}
    */
   init: function(name, args) {
     this.name = name;
@@ -37,7 +37,7 @@ var SassScriptFunction = Class.extend({
    * Evaluates the function.
    * Look for a user defined function first - this allows users to override
    * pre-defined functions, then try the pre-defined functions.
-   * @return {Function} the value of this Function
+   * @returns {Function} the value of this Function
    * @throws {ScriptFunctionException} if function is undefined
    */
   perform: function() {
@@ -74,7 +74,7 @@ var SassScriptFunction = Class.extend({
   /**
    * Imports files in the specified directory.
    * @param {string} dir - path to directory to import
-   * @return {array} filenames imported
+   * @returns {Array} filenames imported
    */
   'import': function(dir) {
     var files = [];
@@ -91,7 +91,7 @@ var SassScriptFunction = Class.extend({
    * Returns a value indicating if a token of this type can be matched at
    * the start of the subject string.
    * @param {string} subject - the subject string
-   * @return {string|boolean} match at the start of the string or false if no match
+   * @returns {string|boolean} match at the start of the string or false if no match
    */
   isa: function(subject) {
     var matches = subject.match(this.MATCH);

@@ -20,7 +20,7 @@ var SassBoolean = module.exports = SassLiteral.extend({
   /**
    * SassBoolean constructor
    * @param {string} value - value of the boolean type
-   * @return {SassBoolean}
+   * @returns {SassBoolean}
    */
   init: function(value) {
     if (typeof value == 'boolean') {
@@ -35,7 +35,7 @@ var SassBoolean = module.exports = SassLiteral.extend({
 
   /**
    * Returns the value of this boolean.
-   * @return {boolean} the value of this boolean
+   * @returns {boolean} the value of this boolean
    */
   getValue: function() {
     return this.value;
@@ -43,7 +43,7 @@ var SassBoolean = module.exports = SassLiteral.extend({
 
   /**
    * Returns a string representation of the value.
-   * @return {string} string representation of the value.
+   * @returns {string} string representation of the value.
    */
   toString: function() {
     return this.getValue() ? 'true' : 'false';
@@ -53,7 +53,7 @@ var SassBoolean = module.exports = SassLiteral.extend({
    * Returns a value indicating if a token of this type can be matched at
    * the start of the subject string.
    * @param {string} subject - the subject string
-   * @return {string|boolean} match at the start of the string or false if no match
+   * @returns {string|boolean} match at the start of the string or false if no match
    */
   isa: function(subject) {
     var matches = subject.match(this.MATCH);

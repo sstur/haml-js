@@ -25,7 +25,7 @@ var SassScriptLexer = module.exports = Class.extend({
 
   /**
   * SassScriptLexer constructor.
-  * @return {SassScriptLexer}
+  * @returns {SassScriptLexer}
   */
   init: function(parser) {
     this.parser = parser;
@@ -35,7 +35,7 @@ var SassScriptLexer = module.exports = Class.extend({
    * Lex an expression into SassScript tokens.
    * @param {string} string - expression to lex
    * @param {SassContext} context - the context in which the expression is lexed
-   * @return {array} tokens
+   * @returns {Array} tokens
    */
   lex: function(string, context) {
     var tokens = [];
@@ -98,7 +98,7 @@ var SassScriptLexer = module.exports = Class.extend({
    * Returns a value indicating if a token of this type can be matched at
    * the start of the subject string.
    * @param {string} subject - the subject string
-   * @return {number|boolean} match at the start of the string or false if no match
+   * @returns {number|boolean} match at the start of the string or false if no match
    */
   isWhitespace: function(subject) {
     var matches = subject.match(this.MATCH_WHITESPACE);

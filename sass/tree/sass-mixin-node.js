@@ -30,8 +30,8 @@ var SassMixinNode = module.exports = SassNode.extend({
 
   /**
    * SassMixinDefinitionNode constructor.
-   * @param {object} token - source token
-   * @return {SassMixinNode}
+   * @param {Object} token - source token
+   * @returns {SassMixinNode}
    */
   init: function(token) {
     this._super(token);
@@ -47,7 +47,7 @@ var SassMixinNode = module.exports = SassNode.extend({
    * Set passed arguments and any optional arguments not passed to their
    * defaults, then render the children of the mixin definition.
    * @param {SassContext} the context in which this node is parsed
-   * @return array the parsed node
+   * @returns array the parsed node
    */
   parse: function(context) {
     var mixin = context.getMixin(this.name);
@@ -80,7 +80,7 @@ var SassMixinNode = module.exports = SassNode.extend({
   /**
    * Returns a value indicating if the token represents this type of node.
    * @param object token
-   * @return boolean true if the token represents this type of node, false if not
+   * @returns boolean true if the token represents this type of node, false if not
    */
   isa: function(token) {
     return (token.source.charAt(0) === this.NODE_IDENTIFIER);

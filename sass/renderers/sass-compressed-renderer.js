@@ -65,7 +65,7 @@ var SassCompressedRenderer = module.exports = SassRenderer.extend({
   /**
    * Renders a property.
    * @param {SassNode} node - the node being rendered
-   * @return {string} the rendered property
+   * @returns {string} the rendered property
    */
   renderProperty: function(node) {
     return node.name + ':' + node.value + ';';
@@ -76,7 +76,7 @@ var SassCompressedRenderer = module.exports = SassRenderer.extend({
    * @param {SassNode} node - the node being rendered
    * @param {Array} properties - rule properties
    * @param {string} rules - rendered rules
-   * @return {string} the rendered directive
+   * @returns {string} the rendered directive
    */
   renderRule: function(node, properties, rules) {
     return (properties ? this.renderSelectors(node) + this.between() + this.renderProperties(node, properties) + this.end() : '') + rules;
@@ -85,7 +85,7 @@ var SassCompressedRenderer = module.exports = SassRenderer.extend({
   /**
    * Renders the rule's selectors
    * @param {SassNode} node - the node being rendered
-   * @return {string} the rendered selectors
+   * @returns {string} the rendered selectors
    */
   renderSelectors: function(node) {
     return node.selectors.join(',');

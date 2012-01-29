@@ -34,8 +34,8 @@ var SassVariableNode = module.exports = SassNode.extend({
 
   /**
    * SassVariableNode constructor.
-   * @param {object} token - source token
-   * @return {SassVariableNode}
+   * @param {Object} token - source token
+   * @returns {SassVariableNode}
    */
   init: function(token) {
     this._super(token);
@@ -60,7 +60,7 @@ var SassVariableNode = module.exports = SassNode.extend({
    * Parse this node.
    * Sets the variable in the current context.
    * @param {SassContext} context - the context in which this node is parsed
-   * @return {array} the parsed node - an empty array
+   * @returns {Array} the parsed node - an empty array
    */
   parse: function(context) {
     if (!this.isDefault || !context.hasVariable(this.name)) {
@@ -72,8 +72,8 @@ var SassVariableNode = module.exports = SassNode.extend({
 
   /**
    * Returns a value indicating if the token represents this type of node.
-   * @param {object} token
-   * @return {boolean} true if the token represents this type of node, false if not
+   * @param {Object} token
+   * @returns {boolean} true if the token represents this type of node, false if not
    */
   isa: function(token) {
     return token.source[0] === this.SASS_IDENTIFIER || token.source[0] === this.SCSS_IDENTIFIER;

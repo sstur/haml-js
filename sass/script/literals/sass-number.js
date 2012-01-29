@@ -66,7 +66,7 @@ var SassNumber = module.exports = SassLiteral.extend({
    * class constructor.
    * Sets the value and units of the number.
    * @param {string} value - number
-   * @return {SassNumber}
+   * @returns {SassNumber}
    */
   init: function(value) {
     var matches = value.match(this.MATCH);
@@ -91,7 +91,7 @@ var SassNumber = module.exports = SassLiteral.extend({
   /**
    * Adds the value of other to the value of this
    * @param {SassNumber|SassColour} other - value to add
-   * @return {SassNumber|SassColour} SassNumber if other is a SassNumber or
+   * @returns {SassNumber|SassColour} SassNumber if other is a SassNumber or
    * SassColour if it is a SassColour
    */
   op_plus: function(other) {
@@ -108,7 +108,7 @@ var SassNumber = module.exports = SassLiteral.extend({
 
   /**
    * Unary + operator
-   * @return {SassNumber} the value of this number
+   * @returns {SassNumber} the value of this number
    */
   op_unary_plus: function() {
     return this;
@@ -117,7 +117,7 @@ var SassNumber = module.exports = SassLiteral.extend({
   /**
    * Subtracts the value of other from this value
    * @param {SassNumber|SassColour} other - value to subtract
-   * @return {SassNumber|SassColour} SassNumber if other is a SassNumber or
+   * @returns {SassNumber|SassColour} SassNumber if other is a SassNumber or
    * SassColour if it is a SassColour
    */
   op_minus: function(other) {
@@ -134,7 +134,7 @@ var SassNumber = module.exports = SassLiteral.extend({
 
   /**
    * Unary - operator
-   * @return {SassNumber} the negative value of this number
+   * @returns {SassNumber} the negative value of this number
    */
   op_unary_minus: function() {
     return new SassNumber((this.value * -1) + this.units);
@@ -143,7 +143,7 @@ var SassNumber = module.exports = SassLiteral.extend({
   /**
    * Multiplies this value by the value of other
    * @param {SassNumber|SassColour} other - value to multiply by
-   * @return {SassNumber|SassColour} SassNumber if other is a SassNumber or
+   * @returns {SassNumber|SassColour} SassNumber if other is a SassNumber or
    * SassColour if it is a SassColour
    */
   op_times: function(other) {
@@ -163,7 +163,7 @@ var SassNumber = module.exports = SassLiteral.extend({
   /**
    * Divides this value by the value of other
    * @param {SassNumber|SassColour} other - value to divide by
-   * @return {SassNumber|SassColour} SassNumber if other is a SassNumber or
+   * @returns {SassNumber|SassColour} SassNumber if other is a SassNumber or
    * SassColour if it is a SassColour
    */
   op_div: function(other) {
@@ -185,7 +185,7 @@ var SassNumber = module.exports = SassLiteral.extend({
   
   /**
    * The SassScript == operation.
-   * @return {SassBoolean} SassBoolean object with the value true if the values
+   * @returns {SassBoolean} SassBoolean object with the value true if the values
    * of this and other are equal, false if they are not
    */
   op_eq: function(other) {
@@ -202,7 +202,7 @@ var SassNumber = module.exports = SassLiteral.extend({
   /**
    * The SassScript > operation.
    * @param {SassLiteral} other - the value to compare to this
-   * @return {SassBoolean} SassBoolean object with the value true if the values
+   * @returns {SassBoolean} SassBoolean object with the value true if the values
    * of this is greater than the value of other, false if it is not
    */
   op_gt: function(other) {
@@ -215,7 +215,7 @@ var SassNumber = module.exports = SassLiteral.extend({
   /**
    * The SassScript >= operation.
    * @param {SassLiteral} other - the value to compare to this
-   * @return {SassBoolean} SassBoolean object with the value true if the values
+   * @returns {SassBoolean} SassBoolean object with the value true if the values
    * of this is greater than or equal to the value of other, false if it is not
    */
   op_gte: function(other) {
@@ -228,7 +228,7 @@ var SassNumber = module.exports = SassLiteral.extend({
   /**
    * The SassScript < operation.
    * @param {SassLiteral} other - the value to compare to this
-   * @return {SassBoolean} SassBoolean object with the value true if the values
+   * @returns {SassBoolean} SassBoolean object with the value true if the values
    * of this is less than the value of other, false if it is not
    */
   op_lt: function(other) {
@@ -241,7 +241,7 @@ var SassNumber = module.exports = SassLiteral.extend({
   /**
    * The SassScript <= operation.
    * @param {SassLiteral} other - the value to compare to this
-   * @return {SassBoolean} SassBoolean object with the value true if the values
+   * @returns {SassBoolean} SassBoolean object with the value true if the values
    * of this is less than or equal to the value of other, false if it is not
    */
   op_lte: function(other) {
@@ -254,7 +254,7 @@ var SassNumber = module.exports = SassLiteral.extend({
   /**
    * Takes the modulus (remainder) of this value divided by the value of other
    * @param {string} other - value to divide by
-   * @return {SassNumber|SassColour} SassNumber if other is a SassNumber or
+   * @returns {SassNumber|SassColour} SassNumber if other is a SassNumber or
    * SassColour if it is a SassColour
    */
   op_modulo: function(other) {
@@ -270,7 +270,7 @@ var SassNumber = module.exports = SassLiteral.extend({
    * If this is a unitless numeber it will take the units of other; if not
    * other is coerced to the units of this.
    * @param {SassNumber} other - the other number
-   * @return {SassNumber} the other number with its value and units coerced if neccessary
+   * @returns {SassNumber} the other number with its value and units coerced if neccessary
    * @throws {NumberException} if the units are incompatible
    */
   convert: function(other) {
@@ -290,9 +290,9 @@ var SassNumber = module.exports = SassLiteral.extend({
    * as well as between e.g. in and cm.
    * 
    * If this number is unitless, it will simply return itself with the given units.
-   * @param {array} numeratorUnits
-   * @param {array} denominatorUnits
-   * @return {SassNumber}
+   * @param {Array} numeratorUnits
+   * @param {Array} denominatorUnits
+   * @returns {SassNumber}
    */
   coerce: function(numeratorUnits, denominatorUnits) {
     return new SassNumber((this.isUnitless() ?
@@ -305,9 +305,9 @@ var SassNumber = module.exports = SassLiteral.extend({
   
   /**
    * Calculates the corecion factor to apply to the value
-   * @param {array} fromUnits - units being converted from
-   * @param {array} toUnits - units being converted to
-   * @return {number} the coercion factor to apply
+   * @param {Array} fromUnits - units being converted from
+   * @param {Array} toUnits - units being converted to
+   * @returns {number} the coercion factor to apply
    */
   coercionFactor: function(fromUnits, toUnits) {
     var units = this.removeCommonUnits(fromUnits, toUnits);
@@ -333,8 +333,8 @@ var SassNumber = module.exports = SassLiteral.extend({
   
   /**
    * Returns a value indicating if all the units are capable of being converted
-   * @param {array} units - units to test
-   * @return {boolean} true if all units can be converted, false if not
+   * @param {Array} units - units to test
+   * @returns {boolean} true if all units can be converted, false if not
    */
   areConvertable: function(units) {
     var convertable = Object.keys(this.unitConversion);
@@ -349,9 +349,9 @@ var SassNumber = module.exports = SassLiteral.extend({
    * Removes common units from each set.
    * We don't use array_diff because we want (for eaxmple) mm*mm/mm*cm to
    * end up as mm/cm. 
-   * @param {array} u1 - first set of units
-   * @param {array} u2 - second set of units
-   * @return {array} both sets of units with common units removed
+   * @param {Array} u1 - first set of units
+   * @param {Array} u2 - second set of units
+   * @returns {Array} both sets of units with common units removed
    */
   removeCommonUnits: function(u1, u2) {
     var _u1 = [];
@@ -369,7 +369,7 @@ var SassNumber = module.exports = SassLiteral.extend({
 
   /**
    * Returns a value indicating if this number is unitless.
-   * @return {boolean} true if this number is unitless, false if not
+   * @returns {boolean} true if this number is unitless, false if not
    */
   isUnitless: function() {
     return !this.numeratorUnits && !this.denominatorUnits;
@@ -378,7 +378,7 @@ var SassNumber = module.exports = SassLiteral.extend({
   /**
    * Returns a value indicating if this number has units that can be represented
    * in CSS.
-   * @return {boolean} true if this number has units that can be represented in
+   * @returns {boolean} true if this number has units that can be represented in
    * CSS, false if not
    */
   hasLegalUnits: function() {
@@ -387,7 +387,7 @@ var SassNumber = module.exports = SassLiteral.extend({
 
   /**
    * Returns a string representation of the units.
-   * @return {string} the units
+   * @returns {string} the units
    */
   unitString: function(numeratorUnits, denominatorUnits) {
     return numeratorUnits.join(' * ') +
@@ -396,7 +396,7 @@ var SassNumber = module.exports = SassLiteral.extend({
 
   /**
    * Returns the units of this number.
-   * @return {string} the units of this number
+   * @returns {string} the units of this number
    */
   getUnits: function() {
     return this.unitString(this.numeratorUnits, this.denominatorUnits);
@@ -404,7 +404,7 @@ var SassNumber = module.exports = SassLiteral.extend({
 
   /**
    * Returns the denominator units of this number.
-   * @return {string} the denominator units of this number
+   * @returns {string} the denominator units of this number
    */
   getDenominatorUnits: function() {
     return this.denominatorUnits.join(' * ');
@@ -412,7 +412,7 @@ var SassNumber = module.exports = SassLiteral.extend({
 
   /**
    * Returns the numerator units of this number.
-   * @return {string} the numerator units of this number
+   * @returns {string} the numerator units of this number
    */
   getNumeratorUnits: function() {
     return this.numeratorUnits.join(' * ');
@@ -420,7 +420,7 @@ var SassNumber = module.exports = SassLiteral.extend({
   
   /**
    * Returns a value indicating if this number can be compared to other.
-   * @return {boolean} true if this number can be compared to other, false if not
+   * @returns {boolean} true if this number can be compared to other, false if not
    */
   isComparableTo: function(other) {
     try {
@@ -433,7 +433,7 @@ var SassNumber = module.exports = SassLiteral.extend({
 
   /**
    * Returns a value indicating if this number is an integer.
-   * @return {boolean} true if this number is an integer, false if not
+   * @returns {boolean} true if this number is an integer, false if not
    */
   isInt: function() {
     return this.value % 1 === 0;
@@ -441,7 +441,7 @@ var SassNumber = module.exports = SassLiteral.extend({
 
   /**
    * Returns the value of this number.
-   * @return {number} the value of this number.
+   * @returns {number} the value of this number.
    */
   getValue: function() {
     return this.value;
@@ -449,7 +449,7 @@ var SassNumber = module.exports = SassLiteral.extend({
 
   /**
    * Returns the integer value.
-    * @return {number} the integer value.
+    * @returns {number} the integer value.
     * @throws {NumberException} if the number is not an integer
    */
   toInt: function() {
@@ -463,7 +463,7 @@ var SassNumber = module.exports = SassLiteral.extend({
    * Converts the number to a string with it's units if any.
    * If the units are px the result is rounded down to the nearest integer,
    * otherwise the result is rounded to the specified precision.
-    * @return {string} number as a string with it's units if any
+    * @returns {string} number as a string with it's units if any
    */
   toString: function() {
     if  (!this.hasLegalUnits()) {
@@ -476,7 +476,7 @@ var SassNumber = module.exports = SassLiteral.extend({
    * Returns a value indicating if a token of this type can be matched at
    * the start of the subject string.
    * @param {string} subject - the subject string
-   * @return {string|boolean} match at the start of the string or false if no match
+   * @returns {string|boolean} match at the start of the string or false if no match
    */
   isa: function(subject) {
     var matches = subject.match(this.MATCH);

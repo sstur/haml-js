@@ -31,7 +31,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * A number between 0 and 255 inclusive, or between 0% and 100% inclusive
    * @param SassNumber the blue component.
    * A number between 0 and 255 inclusive, or between 0% and 100% inclusive
-   * @return new SassColour SassColour object
+   * @returns new SassColour SassColour object
    * @throws ScriptFunctionException if red, green, or blue are out of bounds
    */
   rgb: function($red, $green, $blue) {
@@ -55,7 +55,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * @param SassColour a SassColour object
    * @param SassNumber The alpha channel. A number between 0 and 1.
    *
-   * @return new SassColour SassColour object
+   * @returns new SassColour SassColour object
    * @throws ScriptFunctionException if any of the red, green, or blue
    * colour components are out of bounds, or or the colour is not a colour, or
    * alpha is out of bounds
@@ -102,7 +102,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * Must be between '0%' and 100%, inclusive
    * @param mixed The lightness of the colour as a percentage.
    * Must be between 0% and 100%, inclusive
-   * @return new SassColour The resulting colour
+   * @returns new SassColour The resulting colour
    * @throws ScriptFunctionException if saturation or lightness are out of bounds
    */
   hsl: function($h, $s, $l) {
@@ -119,7 +119,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * @param SassNumber The lightness of the colour as a percentage.
    * Must be between 0% and 100% inclusive
    * @param float The alpha channel. A number between 0 and 1.
-   * @return new SassColour The resulting colour
+   * @returns new SassColour The resulting colour
    * @throws ScriptFunctionException if saturation, lightness or alpha are
    * out of bounds
    */
@@ -141,7 +141,7 @@ var SassScriptFunctions = module.exports = Class.extend({
   /**
    * Returns the red component of a colour.
    * @param SassColour The colour
-   * @return new SassNumber The red component of colour
+   * @returns new SassNumber The red component of colour
    * @throws ScriptFunctionException If $colour is not a colour
    */
   red: function($colour) {
@@ -152,7 +152,7 @@ var SassScriptFunctions = module.exports = Class.extend({
   /**
    * Returns the green component of a colour.
    * @param SassColour The colour
-   * @return new SassNumber The green component of colour
+   * @returns new SassNumber The green component of colour
    * @throws ScriptFunctionException If $colour is not a colour
    */
   green: function($colour) {
@@ -163,7 +163,7 @@ var SassScriptFunctions = module.exports = Class.extend({
   /**
    * Returns the blue component of a colour.
    * @param SassColour The colour
-   * @return new SassNumber The blue component of colour
+   * @returns new SassNumber The blue component of colour
    * @throws ScriptFunctionException If $colour is not a colour
    */
   blue: function($colour) {
@@ -174,7 +174,7 @@ var SassScriptFunctions = module.exports = Class.extend({
   /**
    * Returns the hue component of a colour.
    * @param SassColour The colour
-   * @return new SassNumber The hue component of colour
+   * @returns new SassNumber The hue component of colour
    * @throws ScriptFunctionException If $colour is not a colour
    */
   hue: function($colour) {
@@ -185,7 +185,7 @@ var SassScriptFunctions = module.exports = Class.extend({
   /**
    * Returns the saturation component of a colour.
    * @param SassColour The colour
-   * @return new SassNumber The saturation component of colour
+   * @returns new SassNumber The saturation component of colour
    * @throws ScriptFunctionException If $colour is not a colour
    */
   saturation: function($colour) {
@@ -196,7 +196,7 @@ var SassScriptFunctions = module.exports = Class.extend({
   /**
    * Returns the lightness component of a colour.
    * @param SassColour The colour
-   * @return new SassNumber The lightness component of colour
+   * @returns new SassNumber The lightness component of colour
    * @throws ScriptFunctionException If $colour is not a colour
    */
   lightness: function($colour) {
@@ -207,7 +207,7 @@ var SassScriptFunctions = module.exports = Class.extend({
   /**
    * Returns the alpha component (opacity) of a colour.
    * @param SassColour The colour
-   * @return new SassNumber The alpha component (opacity) of colour
+   * @returns new SassNumber The alpha component (opacity) of colour
    * @throws ScriptFunctionException If $colour is not a colour
    */
   alpha: function($colour) {
@@ -218,7 +218,7 @@ var SassScriptFunctions = module.exports = Class.extend({
   /**
    * Returns the alpha component (opacity) of a colour.
    * @param SassColour The colour
-   * @return new SassNumber The alpha component (opacity) of colour
+   * @returns new SassNumber The alpha component (opacity) of colour
    * @throws ScriptFunctionException If $colour is not a colour
    */
   opacity: function($colour) {
@@ -234,7 +234,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * Changes the hue of a colour while retaining the lightness and saturation.
    * @param SassColour The colour to adjust
    * @param SassNumber The amount to adjust the colour by
-   * @return new SassColour The adjusted colour
+   * @returns new SassColour The adjusted colour
    * @throws ScriptFunctionException If $colour is not a colour or
    * $degrees is not a number
    */
@@ -255,7 +255,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * the resulting colour lightness value is 90% if the amount is a proportion
    * of the total range, whereas it is 60% if the amount is a proportion of the
    * current value.
-   * @return new SassColour The lightened colour
+   * @returns new SassColour The lightened colour
    * @throws ScriptFunctionException If $colour is not a colour or
    * $amount is not a number
    * @see lighten_rel
@@ -276,7 +276,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * the resulting colour lightness value is 30% if the amount is a proportion
    * of the total range, whereas it is 40% if the amount is a proportion of the
    * current value.
-   * @return new SassColour The darkened colour
+   * @returns new SassColour The darkened colour
    * @throws ScriptFunctionException If $colour is not a colour or
    * $amount is not a number
    * @see adjust
@@ -297,7 +297,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * the resulting colour saturation value is 90% if the amount is a proportion
    * of the total range, whereas it is 60% if the amount is a proportion of the
    * current value.
-   * @return new SassColour The saturated colour
+   * @returns new SassColour The saturated colour
    * @throws ScriptFunctionException If $colour is not a colour or
    * $amount is not a number
    * @see adjust
@@ -318,7 +318,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * the resulting colour saturation value is 30% if the amount is a proportion
    * of the total range, whereas it is 40% if the amount is a proportion of the
    * current value.
-   * @return new SassColour The desaturateed colour
+   * @returns new SassColour The desaturateed colour
    * @throws ScriptFunctionException If $colour is not a colour or
    * $amount is not a number
    * @see adjust
@@ -337,7 +337,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * If the colour alpha value is 0.4
    * if the amount is 0.5 the resulting colour alpha value  is 0.9,
    * whereas if the amount is 50% the resulting colour alpha value  is 0.6.
-   * @return new SassColour The opacified colour
+   * @returns new SassColour The opacified colour
    * @throws ScriptFunctionException If $colour is not a colour or
    * $amount is not a number
    * @see opacify_rel
@@ -357,7 +357,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * If the colour alpha value is 0.8
    * if the amount is 0.5 the resulting colour alpha value  is 0.3,
    * whereas if the amount is 50% the resulting colour alpha value  is 0.4.
-   * @return new SassColour The transparentized colour
+   * @returns new SassColour The transparentized colour
    * @throws ScriptFunctionException If $colour is not a colour or
    * $amount is not a number
    */
@@ -374,7 +374,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * @param SassNumber The amount to opacify the colour by
    * @param SassBoolean Whether the amount is a proportion of the current value
    * (true) or the total range (false).
-   * @return new SassColour The opacified colour
+   * @returns new SassColour The opacified colour
    * @throws ScriptFunctionException If $colour is not a colour or
    * $amount is not a number
    * @see opacify
@@ -391,7 +391,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * @param SassNumber The amount to transparentize the colour by
    * @param SassBoolean Whether the amount is a proportion of the current value
    * (true) or the total range (false).
-   * @return new SassColour The transparentized colour
+   * @returns new SassColour The transparentized colour
    * @throws ScriptFunctionException If $colour is not a colour or
    * $amount is not a number
    * @see transparentize
@@ -405,7 +405,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * Returns the complement of a colour.
    * Rotates the hue by 180 degrees.
    * @param SassColour The colour
-   * @return new SassColour The comlemented colour
+   * @returns new SassColour The comlemented colour
    * @uses adjust_hue()
    */
   complement: function($colour) {
@@ -415,7 +415,7 @@ var SassScriptFunctions = module.exports = Class.extend({
   /**
    * Greyscale for non-english speakers.
    * @param SassColour The colour
-   * @return new SassColour The greyscale colour
+   * @returns new SassColour The greyscale colour
    * @see desaturate
    */
   grayscale: function($colour) {
@@ -426,7 +426,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * Converts a colour to greyscale.
    * Reduces the saturation to zero.
    * @param SassColour The colour
-   * @return new SassColour The greyscale colour
+   * @returns new SassColour The greyscale colour
    * @see desaturate
    */
   greyscale: function($colour) {
@@ -450,7 +450,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * @param SassColour The first colour
    * @param SassColour The second colour
    * @param float Percentage of the first colour to use
-   * @return new SassColour The mixed colour
+   * @returns new SassColour The mixed colour
    * @throws ScriptFunctionException If $colour1 or $colour2 is
    * not a colour
    */
@@ -546,7 +546,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    *     abs(-10px) => 10px
    *
    * @param SassNumber The number to round
-   * @return SassNumber The absolute value of the number
+   * @returns SassNumber The absolute value of the number
    * @throws ScriptFunctionException If $number is not a number
    */
   abs: function($number) {
@@ -561,7 +561,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    *     ceil(10.6px) => 11px
    *
    * @param SassNumber The number to round
-   * @return new SassNumber The rounded number
+   * @returns new SassNumber The rounded number
    * @throws ScriptFunctionException If $number is not a number
    */
   ceil: function($number) {
@@ -576,7 +576,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    *     floor(10.6px) => 10px
    *
    * @param SassNumber The number to round
-   * @return new SassNumber The rounded number
+   * @returns new SassNumber The rounded number
    * @throws ScriptFunctionException If $value is not a number
    */
   floor: function($number) {
@@ -591,7 +591,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    *     round(10.6px) => 11px
    *
    * @param SassNumber The number to round
-   * @return new SassNumber The rounded number
+   * @returns new SassNumber The rounded number
    * @throws ScriptFunctionException If $number is not a number
    */
   round: function($number) {
@@ -604,7 +604,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * or compared.
    * @param SassNumber The first number to test
    * @param SassNumber The second number to test
-   * @return new SassBoolean True if the numbers are similar
+   * @returns new SassBoolean True if the numbers are similar
    * @throws ScriptFunctionException If $number1 or $number2 is not
    * a number
    */
@@ -620,7 +620,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    *     percentage(100px / 50px) => 200%
    *
    * @param SassNumber The decimal number to convert to a percentage
-   * @return new SassNumber The number as a percentage
+   * @returns new SassNumber The number as a percentage
    * @throws ScriptFunctionException If $number isn't a unitless number
    */
   percentage: function($number) {
@@ -636,7 +636,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * Inspects the unit of the number, returning it as a quoted string.
    * Alias for units.
    * @param SassNumber The number to inspect
-   * @return new SassString The units of the number
+   * @returns new SassString The units of the number
    * @throws ScriptFunctionException If $number is not a number
    * @see units
    */
@@ -647,7 +647,7 @@ var SassScriptFunctions = module.exports = Class.extend({
   /**
    * Inspects the units of the number, returning it as a quoted string.
    * @param SassNumber The number to inspect
-   * @return new SassString The units of the number
+   * @returns new SassString The units of the number
    * @throws ScriptFunctionException If $number is not a number
    */
   units: function($number) {
@@ -659,7 +659,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * Inspects the unit of the number, returning a boolean indicating if it is
    * unitless.
    * @param SassNumber The number to inspect
-   * @return new SassBoolean True if the number is unitless, false if it has units.
+   * @returns new SassBoolean True if the number is unitless, false if it has units.
    * @throws ScriptFunctionException If $number is not a number
    */
   unitless: function($number) {
@@ -675,7 +675,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * Add quotes to a string if the string isn't quoted,
    * or returns the same string if it is.
    * @param string String to quote
-   * @return new SassString Quoted string
+   * @returns new SassString Quoted string
    * @throws ScriptFunctionException If $string is not a string
    * @see unquote
    */
@@ -688,7 +688,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * Removes quotes from a string if the string is quoted, or returns the same
    * string if it's not.
    * @param string String to unquote
-   * @return new SassString Unuoted string
+   * @returns new SassString Unuoted string
    * @throws ScriptFunctionException If $string is not a string
    * @see quote
    */
@@ -700,7 +700,7 @@ var SassScriptFunctions = module.exports = Class.extend({
   /**
    * Returns the variable whose name is the string.
    * @param string String to unquote
-   * @return
+   * @returns
    * @throws ScriptFunctionException If $string is not a string
    */
   get_var: function($string) {
@@ -715,7 +715,7 @@ var SassScriptFunctions = module.exports = Class.extend({
   /**
    * Inspects the type of the argument, returning it as an unquoted string.
    * @param SassLiteral The object to inspect
-   * @return new SassString The type of object
+   * @returns new SassString The type of object
    * @throws ScriptFunctionException If $obj is not an instance of a
    * SassLiteral
    */
@@ -729,7 +729,7 @@ var SassScriptFunctions = module.exports = Class.extend({
    * @param float the value to test
    * @param float the minimum value
    * @param float the maximum value
-   * @return the value clipped to the range
+   * @returns the value clipped to the range
    */
   inRange: function($value, $min, $max) {
       return ($value < $min ? $min : ($value > $max ? $max : $value));

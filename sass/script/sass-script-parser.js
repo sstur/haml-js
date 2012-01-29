@@ -34,7 +34,7 @@ var SassScriptParser = module.exports = Class.extend({
 
   /**
   * SassScriptParser constructor.
-  * @return {SassScriptParser}
+  * @returns {SassScriptParser}
   */
   init: function() {
     this.lexer = new SassScriptLexer(this);
@@ -44,7 +44,7 @@ var SassScriptParser = module.exports = Class.extend({
    * Replace interpolated SassScript contained in '#{}' with the parsed value.
    * @param {string} string - the text to interpolate
    * @param {SassContext} context - the context in which the string is interpolated
-   * @return {string} the interpolated text
+   * @returns {string} the interpolated text
    */
   interpolate: function(string, context) {
     var matches = util.match_all(this.MATCH_INTERPOLATION, string);
@@ -58,8 +58,8 @@ var SassScriptParser = module.exports = Class.extend({
    * Evaluate a SassScript.
    * @param {string} expression - expression to parse
    * @param {SassContext} context - the context in which the expression is evaluated
-   * @param  {integer} environment - the environment in which the expression is evaluated
-   * @return {SassLiteral} parsed value
+   * @param  {number} environment - the environment in which the expression is evaluated
+   * @returns {SassLiteral} parsed value
    */
   evaluate: function(expression, context, environment) {
     environment = environment || this.DEFAULT_ENV;
@@ -94,8 +94,8 @@ var SassScriptParser = module.exports = Class.extend({
    * using the Shunting Yard Algorithm.
    * @param {string} expression - expression to parse
    * @param {SassContext} context - the context in which the expression is parsed
-   * @param  {integer} environment - the environment in which the expression is parsed
-   * @return {array} tokens in RPN
+   * @param  {number} environment - the environment in which the expression is parsed
+   * @returns {Array} tokens in RPN
    */
   parse: function(expression, context, environment) {
     environment = environment || this.DEFAULT_ENV;

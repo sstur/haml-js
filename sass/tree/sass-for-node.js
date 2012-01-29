@@ -44,8 +44,8 @@ var SassForNode = module.exports = SassNode.extend({
 
   /**
    * SassForNode constructor.
-   * @param {object} toke - source token
-   * @return {SassForNode}
+   * @param {Object} toke - source token
+   * @returns {SassForNode}
    */
   init: function(token) {
     this._super(token);
@@ -63,7 +63,7 @@ var SassForNode = module.exports = SassNode.extend({
   /**
    * Parse this node.
    * @param {SassContext} context - the context in which this node is parsed
-   * @return {array} parsed child nodes
+   * @returns {Array} parsed child nodes
    */
   parse: function(context) {
     var children = [];

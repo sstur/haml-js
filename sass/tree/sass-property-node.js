@@ -64,9 +64,9 @@ var SassPropertyNode = SassNode.extend({
 
   /**
    * SassPropertyNode constructor.
-   * @param {object} token - source token
+   * @param {Object} token - source token
    * @param {string} syntax - property syntax
-   * @return {SassPropertyNode}
+   * @returns {SassPropertyNode}
    */
   init: function(token, syntax) {
     if (!syntax) syntax = 'new';
@@ -84,7 +84,7 @@ var SassPropertyNode = SassNode.extend({
    * If the node is a property namespace return all parsed child nodes. If not
    * return the parsed version of this node.
    * @param {SassContext} context - the context in which this node is parsed
-   * @return {array} the parsed node
+   * @returns {Array} the parsed node
    */
   parse: function(context) {
     var ret = [];
@@ -109,7 +109,7 @@ var SassPropertyNode = SassNode.extend({
 
   /**
    * Render this node.
-   * @return {string} the rendered node
+   * @returns {string} the rendered node
    */
   render: function() {
     return this.renderer.renderProperty(this);
@@ -117,7 +117,7 @@ var SassPropertyNode = SassNode.extend({
 
   /**
    * Returns a value indicating if this node is in a namespace
-   * @return {boolean} true if this node is in a property namespace, false if not
+   * @returns {boolean} true if this node is in a property namespace, false if not
    */
   inNamespace: function() {
     var parent = this.parent;
@@ -132,7 +132,7 @@ var SassPropertyNode = SassNode.extend({
 
   /**
    * Returns the namespace for this node
-   * @return {string} the namespace for this node
+   * @returns {string} the namespace for this node
    */
   getNamespace: function() {
     var namespace = [];
@@ -149,7 +149,7 @@ var SassPropertyNode = SassNode.extend({
   /**
    * Returns the name of this property.
    * If the property is in a namespace the namespace is prepended
-   * @return {string} the name of this property
+   * @returns {string} the name of this property
    */
   getName: function() {
     return this.name;
@@ -157,7 +157,7 @@ var SassPropertyNode = SassNode.extend({
 
   /**
    * Returns the parsed value of this property.
-   * @return {string} the parsed value of this property
+   * @returns {string} the parsed value of this property
    */
   getValue: function() {
     return this.value;
@@ -165,9 +165,9 @@ var SassPropertyNode = SassNode.extend({
 
   /**
    * Returns a value indicating if the token represents this type of node.
-   * @param {object} syntax - token
+   * @param {Object} syntax - token
    * @param {string} token - the property syntax being used
-   * @return {boolean} true if the token represents this type of node, false if not
+   * @returns {boolean} true if the token represents this type of node, false if not
    */
   isa: function(token, syntax) {
     var matches = this.match(token, syntax);
@@ -188,9 +188,9 @@ var SassPropertyNode = SassNode.extend({
 
   /**
    * Returns the matches for this type of node.
-   * @param {array} token - the line to match
+   * @param {Array} token - the line to match
    * @param {string} syntax - the property syntax being used
-   * @return {array} matches
+   * @returns {Array} matches
    */
   match: function(token, syntax) {
     var matches;
@@ -217,7 +217,7 @@ var SassPropertyNode = SassNode.extend({
    * content:#{$pos}
    * @see isa()
    * @param {string} string - the string to test
-   * @return {bool} true if the string starts with a pseudo selector, false if not
+   * @returns {bool} true if the string starts with a pseudo selector, false if not
    */
   isPseudoSelector: function(string) {
     var matches = string.match(this.MATCH_PSUEDO_SELECTOR);

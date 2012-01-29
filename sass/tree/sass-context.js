@@ -31,7 +31,7 @@ var SassContext = module.exports = Class.extend({
   /**
    * SassContext constructor.
    * @param {SassContext} parent - the enclosing context
-   * @return {SassContext}
+   * @returns {SassContext}
    */
   init: function(parent) {
     this.parent = parent;
@@ -40,7 +40,7 @@ var SassContext = module.exports = Class.extend({
   /**
    * Adds a mixin
    * @param {string} name - name of mixin
-   * @return {SassMixinDefinitionNode} the mixin
+   * @returns {SassMixinDefinitionNode} the mixin
    */
   addMixin: function(name, mixin) {
     this.mixins[name] = mixin;
@@ -50,7 +50,7 @@ var SassContext = module.exports = Class.extend({
   /**
    * Returns a mixin
    * @param {string} name - name of mixin to return
-   * @return {SassMixinDefinitionNode} the mixin
+   * @returns {SassMixinDefinitionNode} the mixin
    * @throws {SassContextException} if mixin not defined in this context
    */
   getMixin: function(name) {
@@ -66,7 +66,7 @@ var SassContext = module.exports = Class.extend({
   /**
    * Returns a variable defined in this context
    * @param {string} name - name of variable to return
-   * @return {string} the variable
+   * @returns {string} the variable
    * @throws {SassContextException} if variable not defined in this context
    */
   getVariable: function(name) {
@@ -83,7 +83,7 @@ var SassContext = module.exports = Class.extend({
   /**
    * Returns a value indicating if the variable exists in this context
    * @param {string} name - name of variable to test
-   * @return {boolean} true if the variable exists in this context, false if not
+   * @returns {boolean} true if the variable exists in this context, false if not
    */
   hasVariable: function(name) {
     return !!(this.variables[name]);

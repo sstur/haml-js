@@ -281,7 +281,7 @@ var SassColour = SassLiteral.extend({
    * an alpha key.
    * + an array of red, green, and blue values, and optionally an alpha value.
    * @param mixed the colour
-   * @return SassColour
+   * @returns SassColour
    */
   init: function($colour) {
     var $matches;
@@ -344,7 +344,7 @@ var SassColour = SassLiteral.extend({
   /**
    * Colour addition
    * @param mixed SassColour|SassNumber value to add
-   * @return sassColour the colour result
+   * @returns sassColour the colour result
    */
   op_plus: function($other) {
     if ($other instanceof SassNumber) {
@@ -369,7 +369,7 @@ var SassColour = SassLiteral.extend({
   /**
    * Colour subraction
    * @param mixed value (SassColour or SassNumber) to subtract
-   * @return sassColour the colour result
+   * @returns sassColour the colour result
    */
   op_minus: function($other) {
     if ($other instanceof SassNumber) {
@@ -394,7 +394,7 @@ var SassColour = SassLiteral.extend({
   /**
    * Colour multiplication
    * @param mixed SassColour|SassNumber value to multiply by
-   * @return sassColour the colour result
+   * @returns sassColour the colour result
    */
   op_times: function($other) {
     if ($other instanceof SassNumber) {
@@ -419,7 +419,7 @@ var SassColour = SassLiteral.extend({
   /**
    * Colour division
    * @param mixed value (SassColour or SassNumber) to divide by
-   * @return sassColour the colour result
+   * @returns sassColour the colour result
    */
   op_div: function($other) {
     if ($other instanceof SassNumber) {
@@ -444,7 +444,7 @@ var SassColour = SassLiteral.extend({
   /**
    * Colour modulus
    * @param mixed value (SassColour or SassNumber) to divide by
-   * @return sassColour the colour result
+   * @returns sassColour the colour result
    */
   op_modulo: function($other) {
     if ($other instanceof SassNumber) {
@@ -469,7 +469,7 @@ var SassColour = SassLiteral.extend({
   /**
    * Colour bitwise AND
    * @param mixed value (SassColour or SassNumber) to bitwise AND with
-   * @return sassColour the colour result
+   * @returns sassColour the colour result
    */
   op_bw_and: function($other) {
     if ($other instanceof SassNumber) {
@@ -494,7 +494,7 @@ var SassColour = SassLiteral.extend({
   /**
    * Colour bitwise OR
    * @param mixed value (SassColour or SassNumber) to bitwise OR with
-   * @return sassColour the colour result
+   * @returns sassColour the colour result
    */
   op_bw_or: function($other) {
     if ($other instanceof SassNumber) {
@@ -519,7 +519,7 @@ var SassColour = SassLiteral.extend({
   /**
    * Colour bitwise XOR
    * @param mixed value (SassColour or SassNumber) to bitwise XOR with
-   * @return sassColour the colour result
+   * @returns sassColour the colour result
    */
   op_bw_xor: function($other) {
     if ($other instanceof SassNumber) {
@@ -543,7 +543,7 @@ var SassColour = SassLiteral.extend({
 
   /**
    * Colour bitwise NOT
-   * @return sassColour the colour result
+   * @returns sassColour the colour result
    */
   op_not: function() {
       this.red   = ~this.getRed();
@@ -555,7 +555,7 @@ var SassColour = SassLiteral.extend({
   /**
    * Colour bitwise Shift Left
    * @param sassNumber amount to shift left by
-   * @return sassColour the colour result
+   * @returns sassColour the colour result
    */
   op_shiftl: function($other) {
     if (!$other instanceof SassNumber ||!$other.isUnitless()) {
@@ -570,7 +570,7 @@ var SassColour = SassLiteral.extend({
   /**
    * Colour bitwise Shift Right
    * @param sassNumber amount to shift right by
-   * @return sassColour the colour result
+   * @returns sassColour the colour result
    */
   op_shiftr: function($other) {
     if (!$other instanceof SassNumber || !$other.isUnitless()) {
@@ -609,7 +609,7 @@ var SassColour = SassLiteral.extend({
 
   /**
    * Returns the alpha component (opacity) of this colour.
-   * @return float the alpha component (opacity) of this colour.
+   * @returns float the alpha component (opacity) of this colour.
    */
   getAlpha: function() {
     return this.alpha;
@@ -617,7 +617,7 @@ var SassColour = SassLiteral.extend({
 
   /**
    * Returns the hue of this colour.
-   * @return float the hue of this colour.
+   * @returns float the hue of this colour.
    */
   getHue: function() {
     if (!this.hue) {
@@ -628,7 +628,7 @@ var SassColour = SassLiteral.extend({
 
   /**
    * Returns the saturation of this colour.
-   * @return float the saturation of this colour.
+   * @returns float the saturation of this colour.
    */
   getSaturation: function() {
     if (!this.saturation) {
@@ -639,7 +639,7 @@ var SassColour = SassLiteral.extend({
 
   /**
    * Returns the lightness of this colour.
-   * @return float the lightness of this colour.
+   * @returns float the lightness of this colour.
    */
   getLightness: function() {
     if (!this.lightness) {
@@ -650,7 +650,7 @@ var SassColour = SassLiteral.extend({
 
   /**
    * Returns the blue component of this colour.
-   * @return integer the blue component of this colour.
+   * @returns integer the blue component of this colour.
    */
   getBlue: function() {
     if (!this.blue) {
@@ -662,7 +662,7 @@ var SassColour = SassLiteral.extend({
 
   /**
    * Returns the green component of this colour.
-   * @return integer the green component of this colour.
+   * @returns integer the green component of this colour.
    */
   getGreen: function() {
     if (!this.green) {
@@ -674,7 +674,7 @@ var SassColour = SassLiteral.extend({
 
   /**
    * Returns the red component of this colour.
-   * @return integer the red component of this colour.
+   * @returns integer the red component of this colour.
    */
   getRed: function() {
     if (!this.red) {
@@ -686,7 +686,7 @@ var SassColour = SassLiteral.extend({
 
   /**
    * Returns an array with the RGB components of this colour.
-   * @return array the RGB components of this colour
+   * @returns array the RGB components of this colour
    */
   getRgb: function() {
     return [this.red, this.green, this.blue];
@@ -694,7 +694,7 @@ var SassColour = SassLiteral.extend({
 
   /**
    * Returns an array with the RGB and alpha components of this colour.
-   * @return array the RGB and alpha components of this colour
+   * @returns array the RGB and alpha components of this colour
    */
   getRgba: function() {
     return [this.getRed(), this.getGreen(), this.getBlue(), this.alpha];
@@ -702,7 +702,7 @@ var SassColour = SassLiteral.extend({
 
   /**
    * Returns an array with the HSL components of this colour.
-   * @return array the HSL components of this colour
+   * @returns array the HSL components of this colour
    */
   getHsl: function() {
     return [this.getHue(), this.getSaturation(), this.getLightness()];
@@ -710,7 +710,7 @@ var SassColour = SassLiteral.extend({
 
   /**
    * Returns an array with the HSL and alpha components of this colour.
-   * @return array the HSL and alpha components of this colour
+   * @returns array the HSL and alpha components of this colour
    */
   getHsla: function() {
     return [this.getHue(), this.getSaturation(), this.getLightness(), this.alpha];
@@ -718,7 +718,7 @@ var SassColour = SassLiteral.extend({
 
   /**
    * Returns the value of this colour.
-   * @return array the colour
+   * @returns array the colour
    * @deprecated
    */
   getValue: function() {
@@ -727,7 +727,7 @@ var SassColour = SassLiteral.extend({
 
   /**
    * Returns whether this colour object is translucent; that is, whether the alpha channel is non-1.
-   * @return boolean true if this colour is translucent, false if not
+   * @returns boolean true if this colour is translucent, false if not
    */
   isTranslucent: function() {
     return this.alpha < 1;
@@ -736,7 +736,7 @@ var SassColour = SassLiteral.extend({
   /**
    * Converts the colour to a string.
    * @param boolean whether to use CSS3 SVG1.0 colour names
-    * @return string the colour as a named colour, rgba(r,g,g,a) or #rrggbb
+    * @returns string the colour as a named colour, rgba(r,g,g,a) or #rrggbb
    */
   toString: function($css3) {
     $css3 = $css3 || false;
@@ -842,7 +842,7 @@ var SassColour = SassLiteral.extend({
   * 'hsl' if hue, saturation or lightness keys given; null if a non-associative array
   * @param array the colour to test
   * @param boolean whether all colour space keys must be given
-  * @return string name of the colour space
+  * @returns string name of the colour space
   * @throws SassColourException if mixed colour space keys given or not all
   * keys for a colour space are required but not given (contructor)
   */
@@ -872,7 +872,7 @@ var SassColour = SassLiteral.extend({
    * Returns a value indicating if a token of this type can be matched at
    * the start of the subject string.
    * @param string the subject string
-   * @return mixed match at the start of the string or false if no match
+   * @returns mixed match at the start of the string or false if no match
    */
   isa: function(subject) {
     if (!this.regex) {

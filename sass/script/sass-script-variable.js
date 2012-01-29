@@ -18,7 +18,7 @@ var SassScriptVariable = module.exports = Class.extend({
   /**
    * SassVariable constructor
    * @param {string} value - value of the Variable type
-   * @return {SassVariable}
+   * @returns {SassVariable}
    */
   init: function(value) {
     this.name = value.substr(1);
@@ -27,7 +27,7 @@ var SassScriptVariable = module.exports = Class.extend({
   /**
    * Returns the SassScript object for this variable.
    * @param {SassContext} context - context of the variable
-   * @return {SassLiteral} the SassScript object for this variable
+   * @returns {SassLiteral} the SassScript object for this variable
    */
   evaluate: function(context) {
     return context.getVariable(this.name);
@@ -37,7 +37,7 @@ var SassScriptVariable = module.exports = Class.extend({
    * Returns a value indicating if a token of this type can be matched at
    * the start of the subject string.
    * @param {string} subject - the subject string
-   * @return {mixed} match at the start of the string or false if no match
+   * @returns {mixed} match at the start of the string or false if no match
    */
   isa: function(subject) {
     // we need to do the check as preg_match returns a count of 1 if

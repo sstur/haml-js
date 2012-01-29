@@ -9,8 +9,8 @@ var SassIfNode = require('./sass-if-node');
 var SassElseNode = module.exports = SassIfNode.extend({
   /**
    * SassElseNode constructor.
-   * @param {object} token - source token
-   * @return {SassElseNode}
+   * @param {Object} token - source token
+   * @returns {SassElseNode}
    */
   init: function(token) {
     this._super(token, false);

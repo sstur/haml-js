@@ -22,7 +22,7 @@ var SassString = module.exports = SassLiteral.extend({
   /**
    * class constructor
    * @param {string} value
-   * @return {SassString}
+   * @returns {SassString}
    */
   init: function(value) {
     var matches = value.match(this._MATCH);
@@ -40,7 +40,7 @@ var SassString = module.exports = SassLiteral.extend({
    * Concatenates this and other.
    * The resulting string will be quoted in the same way as this.
    * @param {SassString} other - string to add to this
-   * @return {SassString} the string result
+   * @returns {SassString} the string result
    */
   op_plus: function(other) {
     if (!(other instanceof SassString)) {
@@ -54,7 +54,7 @@ var SassString = module.exports = SassLiteral.extend({
    * String multiplication.
    * this is repeated other times
    * @param {SassNumber} other - the number of times to repeat this
-   * @return {SassString} the string result
+   * @returns {SassString} the string result
    */
   op_times: function(other) {
     if (!(other instanceof SassNumber) || !other.isUnitless()) {
@@ -66,7 +66,7 @@ var SassString = module.exports = SassLiteral.extend({
 
   /**
    * Returns the value of this string.
-   * @return {string} the string
+   * @returns {string} the string
    */
   getValue: function() {
     return this.value;
@@ -74,7 +74,7 @@ var SassString = module.exports = SassLiteral.extend({
 
   /**
    * Returns a string representation of the value.
-   * @return {string} string representation of the value.
+   * @returns {string} string representation of the value.
    */
   toString: function() {
     return this.quote + this.value + this.quote;
@@ -88,7 +88,7 @@ var SassString = module.exports = SassLiteral.extend({
    * Returns a value indicating if a token of this type can be matched at
    * the start of the subject string.
    * @param {string} subject - the subject string
-   * @return {string|boolean} match at the start of the string or false if no match
+   * @returns {string|boolean} match at the start of the string or false if no match
    */
   isa: function(subject) {
     var matches = subject.match(this.MATCH);

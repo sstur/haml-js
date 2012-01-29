@@ -10,7 +10,7 @@ var SassCompactRenderer = require('./sass-compact-renderer');
 var SassExpandedRenderer = module.exports = SassCompactRenderer.extend({
   /**
    * Renders the brace between the selectors and the properties
-   * @return {string} the brace between the selectors and the properties
+   * @returns {string} the brace between the selectors and the properties
    */
   between: function() {
     return " {\n" ;
@@ -18,7 +18,7 @@ var SassExpandedRenderer = module.exports = SassCompactRenderer.extend({
 
   /**
    * Renders the brace at the end of the rule
-   * @return {string} the brace between the rule and its properties
+   * @returns {string} the brace between the rule and its properties
    */
   end: function() {
     return "\n}\n\n";
@@ -27,7 +27,7 @@ var SassExpandedRenderer = module.exports = SassCompactRenderer.extend({
   /**
    * Renders a comment.
    * @param {SassNode} node - the node being rendered
-   * @return {string} the rendered comment
+   * @returns {string} the rendered comment
    */
   renderComment: function(node) {
     var indent = this.getIndent(node);
@@ -41,8 +41,8 @@ var SassExpandedRenderer = module.exports = SassCompactRenderer.extend({
   /**
    * Renders properties.
    * @param {SassNode} node - the node being rendered
-   * @param {array} properties - properties to render
-   * @return {string} the rendered properties
+   * @param {Array} properties - properties to render
+   * @returns {string} the rendered properties
    */
   renderProperties: function(node, properties) {
     var indent = this.getIndent(node) + this.INDENT;

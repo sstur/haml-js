@@ -36,7 +36,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * class constructor
    * @param {string} value - value of the literal type
-   * @return {SassLiteral}
+   * @returns {SassLiteral}
    */
   init: function(value, context) {
     this.value = value;
@@ -46,7 +46,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * Getter.
    * @param {string} name - name of property to get
-   * @return {mixed} return value of getter function
+   * @returns {mixed} return value of getter function
    */
   __get: function(name) {
     throw new Sass.LiteralException('No getter function for {what}', {'what':name}, SassScriptParser.context.node);
@@ -54,7 +54,7 @@ var SassLiteral = module.exports = Class.extend({
 
   /**
    * Returns the boolean representation of the value of this
-   * @return {boolean} the boolean representation of the value of this
+   * @returns {boolean} the boolean representation of the value of this
    */
   toBoolean: function() {
     return !!this.value;
@@ -62,7 +62,7 @@ var SassLiteral = module.exports = Class.extend({
 
   /**
    * Returns the type of this
-   * @return {string} the type of this
+   * @returns {string} the type of this
    */
   getTypeOf: function() {
     return this.typeOf[this.type] || 'none';
@@ -70,7 +70,7 @@ var SassLiteral = module.exports = Class.extend({
 
   /**
    * Returns the value of this
-   * @return {mixed} the value of this
+   * @returns {mixed} the value of this
    */
   getValue: function() {
     throw new Sass.LiteralException('Child classes must override this method', {}, SassScriptParser.context.node);
@@ -87,7 +87,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * SassScript '+' operation.
    * @param {SassLiteral} other - value to add
-   * @return {SassString} the string values of this and other with no seperation
+   * @returns {SassString} the string values of this and other with no seperation
    */
   op_plus: function(other) {
     return new SassString(this.toString() + other.toString());
@@ -96,7 +96,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * SassScript '-' operation.
    * @param {SassLiteral} other - value to subtract
-   * @return {SassString} the string values of this and other seperated by '-'
+   * @returns {SassString} the string values of this and other seperated by '-'
    */
   op_minus: function(other) {
     return new SassString(this.toString() + '-' + other.toString());
@@ -105,7 +105,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * SassScript '*' operation.
    * @param {SassLiteral} other - value to multiply by
-   * @return {SassString} the string values of this and other seperated by '*'
+   * @returns {SassString} the string values of this and other seperated by '*'
    */
   op_times: function(other) {
     return new SassString(this.toString() + '*' + other.toString());
@@ -114,7 +114,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * SassScript '/' operation.
    * @param {SassLiteral} other - value to divide by
-   * @return {SassString} the string values of this and other seperated by '/'
+   * @returns {SassString} the string values of this and other seperated by '/'
    */
   op_div: function(other) {
     return new SassString(this.toString() + '/' + other.toString());
@@ -123,7 +123,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * SassScript '%' operation.
    * @param {SassLiteral} other - value to take the modulus of
-   * @return {SassLiteral} result
+   * @returns {SassLiteral} result
    * @throws {Exception} if modulo not supported for the data type
    */
   op_modulo: function(other) {
@@ -133,7 +133,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * Bitwise AND the value of other and this value
    * @param {string} other - value to bitwise AND with
-   * @return {string} result
+   * @returns {string} result
    * @throws {Exception} if bitwise AND not supported for the data type
    */
   op_bw_and: function(other) {
@@ -143,7 +143,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * Bitwise OR the value of other and this value
    * @param {SassNumber} other - value to bitwise OR with
-   * @return {string} result
+   * @returns {string} result
    * @throws {Exception} if bitwise OR not supported for the data type
    */
   op_bw_or: function(other) {
@@ -153,7 +153,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * Bitwise XOR the value of other and the value of this
    * @param {SassNumber} value to bitwise XOR with
-   * @return {string} result
+   * @returns {string} result
    * @throws {Exception} if bitwise XOR not supported for the data type
    */
   op_bw_xor: function(other) {
@@ -163,7 +163,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * Bitwise NOT the value of other and the value of this
    * @param {SassNumber} other - value to bitwise NOT with
-   * @return {string} result
+   * @returns {string} result
    * @throws {Exception} if bitwise NOT not supported for the data type
    */
   op_bw_not: function() {
@@ -173,7 +173,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * Shifts the value of this left by the number of bits given in value
    * @param {SassNumber} other - amount to shift left by
-   * @return {string} result
+   * @returns {string} result
    * @throws {Exception} if bitwise Shift Left not supported for the data type
    */
   op_shiftl: function(other) {
@@ -183,7 +183,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * Shifts the value of this right by the number of bits given in value
    * @param {SassNumber} other - amount to shift right by
-   * @return {string} result
+   * @returns {string} result
    * @throws {Exception} if bitwise Shift Right not supported for the data type
    */
   op_shiftr: function(other) {
@@ -193,7 +193,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * The SassScript and operation.
    * @param {SassLiteral} other - the value to and with this
-   * @return {SassLiteral} other if this is boolean true, this if false
+   * @returns {SassLiteral} other if this is boolean true, this if false
    */
   op_and: function(other) {
     return (this.toBoolean() ? other : this);
@@ -202,7 +202,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * The SassScript or operation.
    * @param {SassLiteral} other - the value to or with this
-   * @return {SassLiteral} this if this is boolean true, other if false
+   * @returns {SassLiteral} this if this is boolean true, other if false
    */
   op_or: function(other) {
     return (this.toBoolean() ? this : other);
@@ -211,7 +211,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * The SassScript xor operation.
    * @param {SassLiteral} other - the value to xor with this
-   * @return {SassBoolean} SassBoolean object with the value true if this or
+   * @returns {SassBoolean} SassBoolean object with the value true if this or
    * other, but not both, are true, false if not
    */
   op_xor: function(other) {
@@ -220,7 +220,7 @@ var SassLiteral = module.exports = Class.extend({
 
   /**
    * The SassScript not operation.
-   * @return {SassBoolean} SassBoolean object with the value true if the
+   * @returns {SassBoolean} SassBoolean object with the value true if the
    * boolean of this is false or false if it is true
    */
   op_not: function() {
@@ -230,7 +230,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * The SassScript > operation.
    * @param {SassLiteral} other - the value to compare to this
-   * @return {SassBoolean} SassBoolean object with the value true if the values
+   * @returns {SassBoolean} SassBoolean object with the value true if the values
    * of this is greater than the value of other, false if it is not
    */
   op_gt: function(other) {
@@ -240,7 +240,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * The SassScript >= operation.
    * @param {SassLiteral} other - the value to compare to this
-   * @return {SassBoolean} SassBoolean object with the value true if the values
+   * @returns {SassBoolean} SassBoolean object with the value true if the values
    * of this is greater than or equal to the value of other, false if it is not
    */
   op_gte: function(other) {
@@ -250,7 +250,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * The SassScript < operation.
    * @param {SassLiteral} other - the value to compare to this
-   * @return {SassBoolean} SassBoolean object with the value true if the values
+   * @returns {SassBoolean} SassBoolean object with the value true if the values
    * of this is less than the value of other, false if it is not
    */
   op_lt: function(other) {
@@ -260,7 +260,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * The SassScript <= operation.
    * @param {SassLiteral} other - the value to compare to this
-   * @return {SassBoolean} SassBoolean object with the value true if the values
+   * @returns {SassBoolean} SassBoolean object with the value true if the values
    * of this is less than or equal to the value of other, false if it is not
    */
   op_lte: function(other) {
@@ -270,7 +270,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * The SassScript == operation.
    * @param {SassLiteral} other - the value to compare to this
-   * @return {SassBoolean} SassBoolean object with the value true if this and
+   * @returns {SassBoolean} SassBoolean object with the value true if this and
    * other are equal, false if they are not
    */
   op_eq: function(other) {
@@ -280,7 +280,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * The SassScript != operation.
    * @param {SassLiteral} other - the value to compare to this
-   * @return {SassBoolean} SassBoolean object with the value true if this and
+   * @returns {SassBoolean} SassBoolean object with the value true if this and
    * other are not equal, false if they are
    */
   op_neq: function(other) {
@@ -290,7 +290,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * The SassScript default operation (e.g. a b, "foo" "bar").
    * @param {SassLiteral} other - the value to concatenate with a space to this
-   * @return {SassString} the string values of this and other seperated by " "
+   * @returns {SassString} the string values of this and other seperated by " "
    */
   op_concat: function(other) {
     return new SassString(this.toString() + ' ' + other.toString());
@@ -299,7 +299,7 @@ var SassLiteral = module.exports = Class.extend({
   /**
    * SassScript ',' operation.
    * @param {SassLiteral} other - the value to concatenate with a comma to this
-   * @return {SassString} the string values of this and other separated by ","
+   * @returns {SassString} the string values of this and other separated by ","
    */
   op_comma: function(other) {
     return new SassString(this.toString() + ', ' + other.toString());
@@ -334,7 +334,7 @@ var SassLiteral = module.exports = Class.extend({
 
   /**
    * Returns a string representation of the value.
-   * @return {string} string representation of the value.
+   * @returns {string} string representation of the value.
    */
   toString: function() {},
 
@@ -342,7 +342,7 @@ var SassLiteral = module.exports = Class.extend({
    * Returns a value indicating if a token of this type can be matched at
    * the start of the subject string.
    * @param {string} subject - the subject string
-   * @return {string|boolean} match at the start of the string or false if no match
+   * @returns {string|boolean} match at the start of the string or false if no match
    */
   isa: function(subject) {}
 });

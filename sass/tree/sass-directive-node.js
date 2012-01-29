@@ -11,8 +11,8 @@ var SassDirectiveNode = module.exports = SassNode.extend({
 
   /**
    * SassDirectiveNode.
-   * @param {object} token - source token
-   * @return {SassDirectiveNode}
+   * @param {Object} token - source token
+   * @returns {SassDirectiveNode}
    */
   init: function(token) {
     this._super(token);
@@ -25,7 +25,7 @@ var SassDirectiveNode = module.exports = SassNode.extend({
   /**
    * Parse this node.
    * @param {SassContext} context - the context in which this node is parsed
-   * @return {array} the parsed node
+   * @returns {Array} the parsed node
    */
   parse: function(context) {
     this.children = this.parseChildren(context);
@@ -34,7 +34,7 @@ var SassDirectiveNode = module.exports = SassNode.extend({
 
   /**
    * Render this node.
-   * @return {string} the rendered node
+   * @returns {string} the rendered node
    */
   render: function() {
     var properties = [];
@@ -47,8 +47,8 @@ var SassDirectiveNode = module.exports = SassNode.extend({
 
   /**
    * Returns a value indicating if the token represents this type of node.
-   * @param {object} token
-   * @return {boolean} true if the token represents this type of node, false if not
+   * @param {Object} token
+   * @returns {boolean} true if the token represents this type of node, false if not
    */
   isa: function(token) {
     return token.source.charAt(0) === this.NODE_IDENTIFIER;
@@ -56,8 +56,8 @@ var SassDirectiveNode = module.exports = SassNode.extend({
 
   /**
    * Returns the directive
-   * @param {object} token
-   * @return {string} the directive
+   * @param {Object} token
+   * @returns {string} the directive
    */
   extractDirective: function(token) {
     var matches = token.source.match(this.MATCH);

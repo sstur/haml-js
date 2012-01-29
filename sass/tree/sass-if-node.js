@@ -23,9 +23,9 @@ var SassIfNode = module.exports = SassNode.extend({
 
   /**
    * SassIfNode constructor.
-   * @param {object} token - source token
+   * @param {Object} token - source token
    * @param {boolean} _if - true for an "if" node, false for an "else if | else" node
-   * @return {SassIfNode}
+   * @returns {SassIfNode}
    */
   init: function(token, _if) {
     var matches;
@@ -43,7 +43,7 @@ var SassIfNode = module.exports = SassNode.extend({
   /**
    * Adds an "else" statement to this node.
    * @param {SassIfNode} node - "else" statement node to add
-   * @return {SassIfNode} this node
+   * @returns {SassIfNode} this node
    */
   addElse: function(node) {
     if (this['else'] == null) {
@@ -59,7 +59,7 @@ var SassIfNode = module.exports = SassNode.extend({
   /**
    * Parse this node.
    * @param {SassContext} context - the context in which this node is parsed
-   * @return {array} parsed child nodes
+   * @returns {Array} parsed child nodes
    */
   parse: function(context) {
     var children;
@@ -76,7 +76,7 @@ var SassIfNode = module.exports = SassNode.extend({
 
   /**
    * Returns a value indicating if this node is an "else" node.
-   * @return true if this node is an "else" node, false if this node is an "if"
+   * @returns true if this node is an "else" node, false if this node is an "if"
    * or "else if" node
    */
   isElse: function() {

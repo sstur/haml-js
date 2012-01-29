@@ -21,8 +21,8 @@ var SassImportNode = module.exports = SassNode.extend({
 
   /**
    * SassImportNode.
-   * @param {object} token - source token
-   * @return {SassImportNode}
+   * @param {Object} token - source token
+   * @returns {SassImportNode}
    */
   init: function(token) {
     this._super(token);
@@ -37,7 +37,7 @@ var SassImportNode = module.exports = SassNode.extend({
    * If the node is a CSS import return the CSS import rule.
    * Else returns the rendered tree for the file.
    * @param {SassContext} context - the context in which this node is parsed
-   * @return {array} the parsed node
+   * @returns {Array} the parsed node
    */
   parse: function(context) {
     var imported = [];
